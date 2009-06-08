@@ -3,7 +3,6 @@
 # python tests.py TestDocumentObject.test_create_document
 
 import sys
-sys.path.append('/home/rmkemker/libkml')
 import unittest
 import kmlbase
 from pylibkml import *
