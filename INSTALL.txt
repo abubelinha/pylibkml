@@ -1,0 +1,8 @@
+Install
+-------
+
+Thank you for downloading pylibkml.
+
+To install it, simply place the included `src` directory somewhere on your
+Python path, or symlink to the directory from somewhere on your Python path.
+
