@@ -783,6 +783,42 @@ class TestPlacemarkObject(unittest.TestCase):
                 + '<styleUrl>http://style.sample.com</styleUrl>'
                 + '</Placemark>')
 
+    def test_create_placemark_with_geometry(self):
+
+        # generate a placemark using libkml
+        placemark1 = factory.CreatePlacemark()
+        placemark1.set_name('Placemark Name')
+        snip = factory.CreateSnippet()
+        snip.set_text('Sample Snippet')
+        placemark1.set_snippet(snip)
+        placemark1.set_description('Sample Description'.encode())
+        timestamp = factory.CreateTimeStamp()
+        timestamp.set_when('5/19/2009')
+        placemark1.set_timeprimitive(timestamp)
+        coordinates = factory.CreateCoordinates()
+        coordinates.add_latlng(40, -120) 
+        point = factory.CreatePoint()
+        point.set_altitudemode(kmldom.ALTITUDEMODE_RELATIVETOGROUND)
+        point.set_extrude(100)
+        point.set_coordinates(coordinates)
+        placemark1.set_geometry(point)
+
+        # generate a placemark using pylibkml
+        placemark2 = Kml().create_placemark({
+                        'name' : 'Placemark Name',
+                        'snippet' : 'Sample Snippet',
+                        'description' : 'Sample Description',
+                        'timestamp' : {'when': '5/19/2009'},
+                        'point' :  Kml().create_point({
+                            'extrude' : 100,
+                            'altitudemode' : 'relativetoground',
+                            'coordinates' : Kml().create_coordinates(-120,40),
+                            })
+                         })
+
+        self.assertEqual(kmldom.SerializeRaw(placemark1),
+                         kmldom.SerializeRaw(placemark2))
+
 
     def test_create_placemark_with_timespan(self):
 
