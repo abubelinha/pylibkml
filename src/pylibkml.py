@@ -30,6 +30,7 @@ __version__ = 0.1
 from types import *
 import string
 from string import *
+import zipfile
 
 try:
     import kmldom
@@ -1946,9 +1947,8 @@ class Kml():
                 viewvolume.set_near(params[key])
         return viewvolume
 
-    """----------------------------------------------------------------
-    HELPER FUNCTIONS USED BY MTRI
-    """
+class Utilities():
+
     def SerializeRaw(self,object):
         return kmldom.SerializeRaw(object)
     
@@ -2109,6 +2109,22 @@ class Kml():
             return ShapeTypeDict[shape.Type()]
         except KeyError:
             return ''
+ 
+    '''----------------------------------------------------------------------
+        NAME: create_kmz()
+        DESCRIPTION: CREATE A KMZ FILE
+        INPUT: KMLFileName - (string) name of .kml file to be zipped (including directory)
+                outputFileName - (string) name of the .kmz file that you want to be created
+                filesToBeZipped - (list of strings) names of the files (and their directories) that you want zipped into the .kmz
+    '''    
+    def create_kmz(self, KMLFileName, outputFileName = 'out.kmz' ,filesToBeZipped = []):
+    
+        zip = zipfile.ZipFile(outputFileName,'w')
+        zip.write(KMLFileName)
+        for x in filesToBeZipped:
+            zip.write(x)
+       
+        zip.close()
 
 if __name__=='__main__':
     from tests import test
