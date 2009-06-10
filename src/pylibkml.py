@@ -252,12 +252,15 @@ class Kml():
     Ref:
     http://code.google.com/apis/kml/documentation/kmlreference.html#coordinates
     """
-    def create_coordinates(self, longitude=None, latitude=None, altitude = None, list = []):
+    def create_coordinates(self, longitude=None, latitude=None, altitude = None, many = []):
     
         coordinates = factory.CreateCoordinates()
         
-        if len(list) > 0:
-            for key in list:
+        if isinstance(longitude,list):
+            for key in longitude:
+                coordinates.add_latlngalt(key[1],key[0],key[2])
+        elif len(many) > 0:
+            for key in many:
                 coordinates.add_latlngalt(key[1],key[0],key[2])
         elif altitude == None:
             coordinates.add_latlng(latitude, longitude)
@@ -1957,7 +1960,6 @@ class Utilities():
     
     def AddAltitudeToShape(self,shape,alt,altMode):
 
-
         newShape = None
 
         if shape.Type() == kmldom.Type_MultiGeometry:
@@ -1975,7 +1977,7 @@ class Utilities():
             pointCoords = oldPoint.get_coordinates()
             newCoords = factory.CreateCoordinates()
             for idx in range(0, pointCoords.get_coordinates_array_size()):
-                coord = coords.get_coordinates_array_at(idx)
+                coord = pointCoords.get_coordinates_array_at(idx)
                 lat = coord.get_latitude()
                 lon = coord.get_longitude()
                 newCoords.add_latlngalt(lat,lon,alt)
