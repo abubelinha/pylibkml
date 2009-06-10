@@ -297,7 +297,7 @@ class Kml():
             elif key == 'displayname':
                 data.set_displayname(params[key])
             elif key == 'value':
-                data.set_value(params[key])
+                data.set_value(str(params[key]))
         return data
         
     """ --------------------------------------------------------------
@@ -434,7 +434,9 @@ class Kml():
             elif key == 'region':
                 feature.set_region(params[key])
             elif key == 'extendeddata':
-                feature.set_extendeddata(params[key])
+                feature.set_extendeddata(
+                        Kml().create_extendeddata({'data':params[key]})
+                        )
             elif key == 'gxballoonvisibility':
                 feature.set_gx_balloonvisibility(params[key])
         return feature
