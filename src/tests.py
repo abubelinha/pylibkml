@@ -155,6 +155,33 @@ class TestDocumentObject(unittest.TestCase):
                 + '</TimeSpan>'
                 + '</Document>')
 
+class TestExtendedDataObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_extendeddata(self):
+        extendeddata = Kml().create_extendeddata()
+
+        self.assertEqual(str(extendeddata.__class__), "<class 'kmldom.ExtendedData'>")
+        self.assertEqual(kmldom.SerializeRaw(extendeddata), '<ExtendedData/>')
+
+    def test_create_extendeddata_with_data(self):
+        
+        data = [ Kml().create_data({'name': 'color', 'value': 'red'}),
+                Kml().create_data({'name': 'height', 'value': 123}), ]
+        extendeddata = Kml().create_extendeddata({'data':data})
+
+        self.assertEqual(kmldom.SerializeRaw(extendeddata),
+                '<ExtendedData>'
+                    + '<Data name="color">'
+                        + '<value>red</value>'
+                    + '</Data>'
+                    + '<Data name="height">'
+                        + '<value>123</value>'
+                    + '</Data>'
+                + '</ExtendedData>')
+
 
 class TestFolderObject(unittest.TestCase):
 
