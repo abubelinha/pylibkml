@@ -71,7 +71,7 @@ class Kml():
     def create_alias(self,params={}):
     
         alias = factory.CreateAlias()
-        alias = self.process_object_attributes(alias,params)
+        alias = self.process_geometry_attributes(alias,params)
         
         for key in params:
             if key == 'sourcehref':

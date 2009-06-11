@@ -4,15 +4,65 @@
 
 import sys
 import unittest
-import kmlbase
 from pylibkml import *
 
 
-class TestSimple(unittest.TestCase):
+class TestAlias(unittest.TestCase):
 
-    def test_simple(self):
-        self.assertTrue(True)
+    def setUp(self):
+        pass
+        
+    def test_create_alias(self):
+        alias = Kml().create_alias()
+        self.assertEqual(str(alias.__class__), "<class 'kmldom.Alias'>")
+        self.assertEqual(kmldom.SerializeRaw(alias), '<Alias/>')
 
+    def test_create_alias_with_attributes(self):
+        alias = Kml().create_alias({'targethref':'test.html',
+                                    'sourcehref':'test.html'})
+                                    
+        self.assertEqual(kmldom.SerializeRaw(alias),'<Alias>'
+        +'<targetHref>test.html</targetHref>'
+        +'<sourceHref>test.html</sourceHref>'
+        +'</Alias>')
+
+class TestAtomAuthor(unittest.TestCase):
+
+    def setUp(self):
+        pass
+        
+    def test_create_atomauthor(self):
+        atomauthor = Kml().create_atomauthor()
+        
+        self.assertEqual(str(atomauthor.__class__), "<class 'kmldom.AtomAuthor'>")
+        self.assertEqual(kmldom.SerializeRaw(atomauthor), '<atom:author/>')
+
+    def test_create_atomauthor_with_attributes(self):
+        atomauthor = Kml().create_atomauthor({'uri':'www.google.com',
+                                            'email':'blizzardhusky@mtu.edu',
+                                            'name':'Blizzard'})
+                                    
+        self.assertEqual(kmldom.SerializeRaw(atomauthor),'<atom:author>'
+        +'<atom:name>Blizzard</atom:name>'
+        +'<atom:uri>www.google.com</atom:uri>'
+        +'<atom:email>blizzardhusky@mtu.edu</atom:email>'
+        +'</atom:author>')
+        
+class TestAtomLink(unittest.TestCase):
+
+    def setUp(self):
+        pass
+        
+    def test_create_atomlink(self):
+        atomlink = Kml().create_atomlink()
+        
+        self.assertEqual(str(atomlink.__class__), "<class 'kmldom.AtomLink'>")
+        self.assertEqual(kmldom.SerializeRaw(atomlink), '<atom:link/>')
+
+    def test_create_atomauthor_with_attributes(self):
+        atomlink = Kml().create_atomlink({'href':'www.google.com'})
+                                    
+        self.assertEqual(kmldom.SerializeRaw(atomlink),'<atom:link href="www.google.com"/>')
 
 class TestBalloonStyle(unittest.TestCase):
 
@@ -75,6 +125,23 @@ class TestCameraObject(unittest.TestCase):
             +'</Camera>'
             )
 
+class TestChangeObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_change(self):
+        change = Kml().create_change()
+        self.assertEqual(str(change.__class__), "<class 'kmldom.Change'>")
+        self.assertEqual(kmldom.SerializeRaw(change), '<Change/>')
+        
+    def test_create_change_with_attributes(self):
+        coordinates = Kml().create_coordinates(-120,40)
+        point = Kml().create_point({'coordinates':coordinates})
+        change = Kml().create_change({'point':point})
+        self.assertEqual(kmldom.SerializeRaw(change),'<Change>'
+            +'<Point><coordinates>-120,40,0\n</coordinates></Point>'
+            +'</Change>')
 
 class TestCoordinatesObject(unittest.TestCase):
 
