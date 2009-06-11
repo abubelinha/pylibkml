@@ -438,9 +438,7 @@ class Kml():
             elif key == 'region':
                 feature.set_region(params[key])
             elif key == 'extendeddata':
-                feature.set_extendeddata(
-                        Kml().create_extendeddata({'data':params[key]})
-                        )
+                feature.set_extendeddata(params[key])
             elif key == 'gxballoonvisibility':
                 feature.set_gx_balloonvisibility(params[key])
         return feature
