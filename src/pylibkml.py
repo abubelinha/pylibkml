@@ -51,15 +51,15 @@ class Kml():
     <AbstractView> element (abstract)
     
     Ref:
-    http://code.google.com/apis/kml/documentation/kmlreference.html#colorstyle
+    http://code.google.com/apis/kml/documentation/kmlreference.html#abstractview
     """
     def process_abstractview_attributes(self,abstractview,params={}):
     
         abstractview = self.process_object_attributes(abstractview,params)
         
         for key in params:
-            if key == 'timestamp' or key == 'timespan' or key == 'gxtimespan' or key == 'gxtimestamp':
-                abstractview.add_timeprimitive(params[key])
+            if key == 'gxtimestamp' or key == 'gxtimespan':
+                abstractview.set_gx_timeprimitive(params[key])
         return abstractview
 
     """ --------------------------------------------------------------

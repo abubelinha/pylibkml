@@ -60,10 +60,11 @@ class TestCameraObject(unittest.TestCase):
                                     'tilt':0,
                                     'roll':0,
                                     'altitudemode': 'clamptoground',
-                                    #'timestamp' : Kml().create_timestamp({'id':'SampleID'}),#Software does not currently support this
+                                    'gxtimestamp' : Kml().create_gxtimestamp({'id':'SampleID'}),
                                     })
         self.assertEqual(kmldom.SerializeRaw(camera),
             '<Camera id="SampleID">'
+            +'<gx:TimeStamp id="SampleID"/>'
             +'<longitude>0</longitude>'
             +'<latitude>0</latitude>'
             +'<altitude>0</altitude>'
