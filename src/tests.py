@@ -311,7 +311,8 @@ class TestExtendedDataObject(unittest.TestCase):
         
         data = [ Kml().create_data({'name': 'color', 'value': 'red'}),
                 Kml().create_data({'name': 'height', 'value': 123}), ]
-        extendeddata = Kml().create_extendeddata({'data':data})
+        extendeddata = Kml().create_extendeddata({'data':data,
+                                                    'schemadata':[Kml().create_schemadata(),Kml().create_schemadata()]})
 
         self.assertEqual(Utilities().SerializeRaw(extendeddata),
                 '<ExtendedData>'
@@ -321,6 +322,7 @@ class TestExtendedDataObject(unittest.TestCase):
                     + '<Data name="height">'
                         + '<value>123</value>'
                     + '</Data>'
+                    + '<SchemaData/><SchemaData/>'
                 + '</ExtendedData>')
 
 

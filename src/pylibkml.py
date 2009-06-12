@@ -1675,9 +1675,7 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#schemadata
     """
     def create_schemadata(self,params={}):
-        schemadata = factory.CreateSchemaData()
-        schemadata = self.process_overlay_attributes(screenoverlay,params)
-        
+        schemadata = factory.CreateSchemaData()        
         for key in params:
             if key == 'simpledata':
                 if isinstance(params[key],list):
