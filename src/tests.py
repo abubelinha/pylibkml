@@ -15,13 +15,13 @@ class TestAlias(unittest.TestCase):
     def test_create_alias(self):
         alias = Kml().create_alias()
         self.assertEqual(str(alias.__class__), "<class 'kmldom.Alias'>")
-        self.assertEqual(kmldom.SerializeRaw(alias), '<Alias/>')
+        self.assertEqual(Utilities().SerializeRaw(alias), '<Alias/>')
 
     def test_create_alias_with_attributes(self):
         alias = Kml().create_alias({'targethref':'test.html',
                                     'sourcehref':'test.html'})
                                     
-        self.assertEqual(kmldom.SerializeRaw(alias),'<Alias>'
+        self.assertEqual(Utilities().SerializeRaw(alias),'<Alias>'
         +'<targetHref>test.html</targetHref>'
         +'<sourceHref>test.html</sourceHref>'
         +'</Alias>')
@@ -35,14 +35,14 @@ class TestAtomAuthor(unittest.TestCase):
         atomauthor = Kml().create_atomauthor()
         
         self.assertEqual(str(atomauthor.__class__), "<class 'kmldom.AtomAuthor'>")
-        self.assertEqual(kmldom.SerializeRaw(atomauthor), '<atom:author/>')
+        self.assertEqual(Utilities().SerializeRaw(atomauthor), '<atom:author/>')
 
     def test_create_atomauthor_with_attributes(self):
         atomauthor = Kml().create_atomauthor({'uri':'www.google.com',
                                             'email':'blizzardhusky@mtu.edu',
                                             'name':'Blizzard'})
                                     
-        self.assertEqual(kmldom.SerializeRaw(atomauthor),'<atom:author>'
+        self.assertEqual(Utilities().SerializeRaw(atomauthor),'<atom:author>'
         +'<atom:name>Blizzard</atom:name>'
         +'<atom:uri>www.google.com</atom:uri>'
         +'<atom:email>blizzardhusky@mtu.edu</atom:email>'
@@ -57,12 +57,12 @@ class TestAtomLink(unittest.TestCase):
         atomlink = Kml().create_atomlink()
         
         self.assertEqual(str(atomlink.__class__), "<class 'kmldom.AtomLink'>")
-        self.assertEqual(kmldom.SerializeRaw(atomlink), '<atom:link/>')
+        self.assertEqual(Utilities().SerializeRaw(atomlink), '<atom:link/>')
 
     def test_create_atomauthor_with_attributes(self):
         atomlink = Kml().create_atomlink({'href':'www.google.com'})
                                     
-        self.assertEqual(kmldom.SerializeRaw(atomlink),'<atom:link href="www.google.com"/>')
+        self.assertEqual(Utilities().SerializeRaw(atomlink),'<atom:link href="www.google.com"/>')
 
 class TestBalloonStyle(unittest.TestCase):
 
@@ -72,7 +72,7 @@ class TestBalloonStyle(unittest.TestCase):
     def test_create_balloonstyle(self):
         balloonstyle = Kml().create_balloonstyle()
         self.assertEqual(str(balloonstyle.__class__), "<class 'kmldom.BalloonStyle'>")
-        self.assertEqual(kmldom.SerializeRaw(balloonstyle), '<BalloonStyle/>')
+        self.assertEqual(Utilities().SerializeRaw(balloonstyle), '<BalloonStyle/>')
 
     def test_create_balloonstyle_with_attributes(self):        
         balloonstyle = Kml().create_balloonstyle({'id' : 'SampleID',
@@ -81,7 +81,7 @@ class TestBalloonStyle(unittest.TestCase):
                                                 'text' : "Sample Text",
                                                 'displaymode' : 'default',
                                                 })
-        self.assertEqual(kmldom.SerializeRaw(balloonstyle),
+        self.assertEqual(Utilities().SerializeRaw(balloonstyle),
             '<BalloonStyle id="SampleID">'
             +'<bgColor>ff0000ff</bgColor>'
             +'<textColor>ffff00ff</textColor>'
@@ -99,7 +99,7 @@ class TestCameraObject(unittest.TestCase):
     def test_create_camera(self):
         camera = Kml().create_camera()
         self.assertEqual(str(camera.__class__), "<class 'kmldom.Camera'>")
-        self.assertEqual(kmldom.SerializeRaw(camera), '<Camera/>')
+        self.assertEqual(Utilities().SerializeRaw(camera), '<Camera/>')
 
     def test_create_camera_with_attributes(self):
         camera = Kml().create_camera({'id' : 'SampleID',
@@ -112,7 +112,7 @@ class TestCameraObject(unittest.TestCase):
                                     'altitudemode': 'clamptoground',
                                     'gxtimestamp' : Kml().create_gxtimestamp({'id':'SampleID'}),
                                     })
-        self.assertEqual(kmldom.SerializeRaw(camera),
+        self.assertEqual(Utilities().SerializeRaw(camera),
             '<Camera id="SampleID">'
             +'<gx:TimeStamp id="SampleID"/>'
             +'<longitude>0</longitude>'
@@ -133,13 +133,13 @@ class TestChangeObject(unittest.TestCase):
     def test_create_change(self):
         change = Kml().create_change()
         self.assertEqual(str(change.__class__), "<class 'kmldom.Change'>")
-        self.assertEqual(kmldom.SerializeRaw(change), '<Change/>')
+        self.assertEqual(Utilities().SerializeRaw(change), '<Change/>')
         
     def test_create_change_with_attributes(self):
         coordinates = Kml().create_coordinates(-120,40)
         point = Kml().create_point({'coordinates':coordinates})
         change = Kml().create_change({'point':point})
-        self.assertEqual(kmldom.SerializeRaw(change),'<Change>'
+        self.assertEqual(Utilities().SerializeRaw(change),'<Change>'
             +'<Point><coordinates>-120,40,0\n</coordinates></Point>'
             +'</Change>')
 
@@ -153,7 +153,7 @@ class TestCoordinatesObject(unittest.TestCase):
 
         self.assertEqual(str(coordinates.__class__),
                         "<class 'kmldom.Coordinates'>")
-        self.assertEqual(kmldom.SerializeRaw(coordinates), 
+        self.assertEqual(Utilities().SerializeRaw(coordinates), 
                         '<coordinates>-120,40,0\n</coordinates>')
 
     def test_create_coordinates_with_altitude(self):
@@ -161,9 +161,72 @@ class TestCoordinatesObject(unittest.TestCase):
 
         self.assertEqual(str(coordinates.__class__),
                         "<class 'kmldom.Coordinates'>")
-        self.assertEqual(kmldom.SerializeRaw(coordinates), 
+        self.assertEqual(Utilities().SerializeRaw(coordinates), 
                         '<coordinates>-120,40,123\n</coordinates>')
 
+class TestCreateObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_create(self):
+        create = Kml().create_create()
+
+        self.assertEqual(str(create.__class__), "<class 'kmldom.Create'>")
+        self.assertEqual(Utilities().SerializeRaw(create), '<Create/>')
+        
+    def test_create_create_with_attributes(self):
+        doc = []
+        doc.append(Kml().create_document())
+        doc.append(Kml().create_document())
+        create = Kml().create_create({'document':doc})
+        
+        self.assertEqual(Utilities().SerializeRaw(create),'<Create>'
+            +'<Document/>'
+            +'<Document/>'
+            +'</Create>')
+
+class TestDataObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_data(self):
+        data = Kml().create_data()
+
+        self.assertEqual(str(data.__class__), "<class 'kmldom.Data'>")
+        self.assertEqual(Utilities().SerializeRaw(data), '<Data/>')
+        
+    def test_create_data_with_attributes(self):
+        data = Kml().create_data({'name':'Name',
+                                    'displayname' : 'Display Name',
+                                    'value' : '1'})
+        self.assertEqual(Utilities().SerializeRaw(data),'<Data name="Name">'
+            +'<displayName>Display Name</displayName>'
+            +'<value>1</value>'
+            +'</Data>')
+            
+class TestDeleteObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_delete(self):
+        delete = Kml().create_delete()
+
+        self.assertEqual(str(delete.__class__), "<class 'kmldom.Delete'>")
+        self.assertEqual(Utilities().SerializeRaw(delete), '<Delete/>')
+        
+    def test_create_data_with_attributes(self):
+        doc = []
+        doc.append(Kml().create_document())
+        doc.append(Kml().create_document())
+        delete = Kml().create_delete({'document':doc})
+        
+        self.assertEqual(Utilities().SerializeRaw(delete),'<Delete>'
+            +'<Document/>'
+            +'<Document/>'
+            +'</Delete>')
 
 class TestDocumentObject(unittest.TestCase):
 
@@ -174,19 +237,19 @@ class TestDocumentObject(unittest.TestCase):
         document = Kml().create_document()
 
         self.assertEqual(str(document.__class__), "<class 'kmldom.Document'>")
-        self.assertEqual(kmldom.SerializeRaw(document), '<Document/>')
+        self.assertEqual(Utilities().SerializeRaw(document), '<Document/>')
 
     def test_create_document_with_attributes(self):
         document = Kml().create_document({'id' : 'SampleID',
                             'name' : 'SampleName',
                             'visibility' : 1,
                             'open' : 1,
-                            #  <atom:author>...<atom:author>         <!-- xmlns:atom -->
-                            #  <atom:link>...</atom:link>            <!-- xmlns:atom -->
-                            #  <address>...</address>                <!-- string -->
+#                            'atomauthor':Kml().create_atomauthor(),
+#                            'atomlink':Kml().create_atomlink(),
+                            'address':'1060 West Addison',
                             #  <xal:AddressDetails>...</xal:AddressDetails>  <!-- xmlns:xal -->
-                            #  <phoneNumber>...</phoneNumber>        <!-- string -->
-                            #  <Snippet maxLines="2">...</Snippet>   <!-- string -->
+                            'phonenumber':'867-5309',
+                            'snippet': Kml().create_snippet({'maxlines':10,'text':'Sample Text'}),
                             'description' : 'Sample Document',
                             #  <AbstractView>...</AbstractView>      <!-- Camera or LookAt -->
                             'timestamp' : {'when': '5/19/2009'},
@@ -199,11 +262,16 @@ class TestDocumentObject(unittest.TestCase):
                             'placemark' : Kml().create_placemark({'id':'placemark',}),
                             'networklink' : Kml().create_networklink({'id' : 'networklink',}),
                         })
-        self.assertEqual(kmldom.SerializeRaw(document),
+        self.assertEqual(Utilities().SerializeRaw(document),
                 '<Document id="SampleID">'
                 + '<name>SampleName</name>'
                 + '<visibility>1</visibility>'
                 + '<open>1</open>'
+#                + '<atom:author/>'
+#                + '<atom:link/>'
+                + '<address>1060 West Addison</address>'
+#                + '<phoneNumber>867-5309</phoneNumber>'
+                + '<Snippet maxLines="10">Sample Text</Snippet>'
                 + '<description>Sample Document</description>'
                 + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
                 + '<NetworkLink id="networklink"/>'
@@ -215,7 +283,7 @@ class TestDocumentObject(unittest.TestCase):
         document = Kml().create_document({'timespan' : {'begin' : '1/2/03',
                                                         'end'   : '1/3/03'},
                                            })
-        self.assertEqual(kmldom.SerializeRaw(document),
+        self.assertEqual(Utilities().SerializeRaw(document),
                 '<Document>'
                 + '<TimeSpan>'
                 + '<begin>1/2/03</begin>'
@@ -232,7 +300,7 @@ class TestExtendedDataObject(unittest.TestCase):
         extendeddata = Kml().create_extendeddata()
 
         self.assertEqual(str(extendeddata.__class__), "<class 'kmldom.ExtendedData'>")
-        self.assertEqual(kmldom.SerializeRaw(extendeddata), '<ExtendedData/>')
+        self.assertEqual(Utilities().SerializeRaw(extendeddata), '<ExtendedData/>')
 
     def test_create_extendeddata_with_data(self):
         
@@ -240,7 +308,7 @@ class TestExtendedDataObject(unittest.TestCase):
                 Kml().create_data({'name': 'height', 'value': 123}), ]
         extendeddata = Kml().create_extendeddata({'data':data})
 
-        self.assertEqual(kmldom.SerializeRaw(extendeddata),
+        self.assertEqual(Utilities().SerializeRaw(extendeddata),
                 '<ExtendedData>'
                     + '<Data name="color">'
                         + '<value>red</value>'
@@ -260,7 +328,7 @@ class TestFolderObject(unittest.TestCase):
         folder = Kml().create_folder()
 
         self.assertEqual(str(folder.__class__), "<class 'kmldom.Folder'>")
-        self.assertEqual(kmldom.SerializeRaw(folder), '<Folder/>')
+        self.assertEqual(Utilities().SerializeRaw(folder), '<Folder/>')
 
     def test_create_folder_with_attributes(self):
 
@@ -273,7 +341,7 @@ class TestFolderObject(unittest.TestCase):
                                       #'address'
                                       #'xal:address details'
                                       #'phone number'
-                                      'snippet' : 'Sample Snippet',
+                                      'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
                                       'description' : 'Sample Description',
                                       #'abstract view' (abstract)        
                                       #  'camera' :
@@ -297,12 +365,12 @@ class TestFolderObject(unittest.TestCase):
                                       #  'gx:tour' :
                                      })
         
-        self.assertEqual(kmldom.SerializeRaw(folder),
+        self.assertEqual(Utilities().SerializeRaw(folder),
                 '<Folder id="sampleID">'
                 + '<name>Outer Folder</name>'
                 + '<visibility>0</visibility>'
                 + '<open>1</open>'
-                + '<Snippet>Sample Snippet</Snippet>'
+                + '<Snippet maxLines="10">Sample Snippet</Snippet>'
                 + '<description>Sample Description</description>'
                 + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
                 + '<styleUrl>http://style.sample.com</styleUrl>'
@@ -313,7 +381,7 @@ class TestFolderObject(unittest.TestCase):
         folder = Kml().create_folder({'timespan' : {'begin' : '1/2/03',
                                                     'end' : '1/3/03'},
                                            })
-        self.assertEqual(kmldom.SerializeRaw(folder),
+        self.assertEqual(Utilities().SerializeRaw(folder),
                 '<Folder>'
                 + '<TimeSpan>'
                 + '<begin>1/2/03</begin>'
@@ -328,7 +396,7 @@ class TestFolderObject(unittest.TestCase):
         folder2 = Kml().create_folder({'name' : 'Outer Folder',
                                       'folder':folder1,})
         
-        self.assertEqual(kmldom.SerializeRaw(folder2),
+        self.assertEqual(Utilities().SerializeRaw(folder2),
                 '<Folder><name>Outer Folder</name>'
                 + '<Folder><name>Inner Folder</name></Folder>'
                 + '</Folder>')
@@ -343,7 +411,7 @@ class TestGxTour(unittest.TestCase):
         gxtour = Kml().create_gxtour()
 
         self.assertEqual(str(gxtour.__class__), "<class 'kmldom.GxTour'>")
-        self.assertEqual(kmldom.SerializeRaw(gxtour), '<gx:Tour/>')
+        self.assertEqual(Utilities().SerializeRaw(gxtour), '<gx:Tour/>')
 
 
 class TestHotSpotObject(unittest.TestCase):
@@ -360,7 +428,7 @@ class TestHotSpotObject(unittest.TestCase):
                                  )
 
         self.assertEqual(str(hotspot.__class__), "<class 'kmldom.HotSpot'>")
-        self.assertEqual(kmldom.SerializeRaw(hotspot), 
+        self.assertEqual(Utilities().SerializeRaw(hotspot), 
                 '<hotSpot x="0.5" xunits="fraction" y="100" yunits="pixels"/>')
 
 
@@ -372,7 +440,7 @@ class TestHotSpotObject(unittest.TestCase):
                                         yunits = 'pixels',
                                  )
 
-        self.assertEqual(kmldom.SerializeRaw(hotspot), 
+        self.assertEqual(Utilities().SerializeRaw(hotspot), 
                 '<hotSpot x="0.5" xunits="fraction" y="100" yunits="pixels"/>')
 
 
@@ -385,7 +453,7 @@ class TestIconObject(unittest.TestCase):
         folder = Kml().create_icon()
 
         self.assertEqual(str(folder.__class__), "<class 'kmldom.Icon'>")
-        self.assertEqual(kmldom.SerializeRaw(folder), '<Icon/>')  
+        self.assertEqual(Utilities().SerializeRaw(folder), '<Icon/>')  
 
     def test_create_icon_with_attributes(self):
         
@@ -400,7 +468,7 @@ class TestIconObject(unittest.TestCase):
             'httpquery' : '[clientVersion]',
         })
 
-        self.assertEquals(kmldom.SerializeRaw(icon),
+        self.assertEquals(Utilities().SerializeRaw(icon),
                 '<Icon id="sample_id">'
                 + '<href>http://sample.com</href>'
                 + '<refreshMode>onChange</refreshMode>'
@@ -427,7 +495,7 @@ class TestIconStyleObject(unittest.TestCase):
         folder = Kml().create_iconstyle()
 
         self.assertEqual(str(folder.__class__), "<class 'kmldom.IconStyle'>")
-        self.assertEqual(kmldom.SerializeRaw(folder), '<IconStyle/>')  
+        self.assertEqual(Utilities().SerializeRaw(folder), '<IconStyle/>')  
 
     def test_create_iconstyle_with_attributes(self):
     
@@ -448,7 +516,7 @@ class TestIconStyleObject(unittest.TestCase):
                                  )
                     })
 
-        self.assertEquals(kmldom.SerializeRaw(style),
+        self.assertEquals(Utilities().SerializeRaw(style),
                     '<IconStyle id="sample_id">'
                     + '<color>ff0000ff</color>'
                     + '<colorMode>normal</colorMode>'
@@ -466,7 +534,7 @@ class TestIconStyleObject(unittest.TestCase):
                         'colormode' : 'random',
                     })
 
-        self.assertEquals(kmldom.SerializeRaw(style),
+        self.assertEquals(Utilities().SerializeRaw(style),
                     '<IconStyle>'
                     #+ '<color>ff0000ff</color>' TODO - allow for HEX colors
                     + '<colorMode>random</colorMode>'
@@ -483,7 +551,7 @@ class TestIconStyleIconObject(unittest.TestCase):
         iconstyleicon = Kml().create_iconstyleicon()
 
         self.assertEqual(str(iconstyleicon.__class__), "<class 'kmldom.IconStyleIcon'>")
-        self.assertEqual(kmldom.SerializeRaw(iconstyleicon), '<Icon/>')  
+        self.assertEqual(Utilities().SerializeRaw(iconstyleicon), '<Icon/>')  
 
     def test_create_iconstyleicon_with_attributes(self):
     
@@ -491,7 +559,7 @@ class TestIconStyleIconObject(unittest.TestCase):
                         'href' : 'Sunset.jpg',
                     })
 
-        self.assertEquals(kmldom.SerializeRaw(style),
+        self.assertEquals(Utilities().SerializeRaw(style),
                     '<Icon>'
                     + '<href>Sunset.jpg</href>'
                     + '</Icon>'
@@ -515,7 +583,7 @@ class TestInnerBoundaryIs(unittest.TestCase):
         inner = Kml().create_linearring({'coordinates':in_coord,})
         innerboundaryis = Kml().create_innerboundaryis({'linearring':inner},)
         self.assertEqual(str(innerboundaryis.__class__),"<class 'kmldom.InnerBoundaryIs'>")
-        self.assertEqual(kmldom.SerializeRaw(innerboundaryis),
+        self.assertEqual(Utilities().SerializeRaw(innerboundaryis),
             '<innerBoundaryIs>'
             +'<LinearRing>'
             +'<coordinates>0,0,0\n0,3,0\n3,3,0\n3,0,0\n0,0,0\n</coordinates>'
@@ -532,7 +600,7 @@ class TestLinearRingObject(unittest.TestCase):
         linearring = Kml().create_linearring()
 
         self.assertEqual(str(linearring.__class__),"<class 'kmldom.LinearRing'>")
-        self.assertEqual(kmldom.SerializeRaw(linearring),'<LinearRing/>')
+        self.assertEqual(Utilities().SerializeRaw(linearring),'<LinearRing/>')
 
     def test_create_linearring_with_attributes(self):
 
@@ -551,7 +619,7 @@ class TestLinearRingObject(unittest.TestCase):
                             'altitudemode': 'relativetoground',
                             'coordinates': coordinates,
                             })
-        self.assertEquals(kmldom.SerializeRaw(linearring),
+        self.assertEquals(Utilities().SerializeRaw(linearring),
                     '<LinearRing id="Sample ID">'
                     + '<extrude>1</extrude>'
                     + '<tessellate>0</tessellate>'
@@ -569,7 +637,7 @@ class TestLineStringObject(unittest.TestCase):
         linestring = Kml().create_linestring()
 
         self.assertEqual(str(linestring.__class__),"<class 'kmldom.LineString'>")
-        self.assertEqual(kmldom.SerializeRaw(linestring),'<LineString/>')
+        self.assertEqual(Utilities().SerializeRaw(linestring),'<LineString/>')
 
     def test_create_linestring_with_attributes(self):
     
@@ -583,7 +651,7 @@ class TestLineStringObject(unittest.TestCase):
                             'tessellate':0,
                             'altitudemode': 'relativetoground',
                             'coordinates': coordinates,})                            
-        self.assertEquals(kmldom.SerializeRaw(linestring),
+        self.assertEquals(Utilities().SerializeRaw(linestring),
                     '<LineString id="Sample ID">'
                     + '<extrude>1</extrude>'
                     + '<tessellate>0</tessellate>'
@@ -600,7 +668,7 @@ class TestLineStyleObject(unittest.TestCase):
     def test_create_linestyle(self):
         linestyle = Kml().create_linestyle()
         self.assertEqual(str(linestyle.__class__),"<class 'kmldom.LineStyle'>")
-        self.assertEqual(kmldom.SerializeRaw(linestyle),'<LineStyle/>')
+        self.assertEqual(Utilities().SerializeRaw(linestyle),'<LineStyle/>')
 
     def test_create_linestyle_with_attributes(self):
         linestyle = Kml().create_linestyle({'id' : 'SampleID',
@@ -608,7 +676,7 @@ class TestLineStyleObject(unittest.TestCase):
                                             'colormode' : kmldom.COLORMODE_NORMAL,
                                             'width' : 10,
                                             })
-        self.assertEquals(kmldom.SerializeRaw(linestyle),
+        self.assertEquals(Utilities().SerializeRaw(linestyle),
             '<LineStyle id="SampleID">'
             + '<color>ff0000ff</color>'
             + '<colorMode>normal</colorMode>'
@@ -622,7 +690,7 @@ class TestLinkObject(unittest.TestCase):
     def test_create_link(self):
         link = Kml().create_link()
         self.assertEqual(str(link.__class__),"<class 'kmldom.Link'>")
-        self.assertEqual(kmldom.SerializeRaw(link),'<Link/>')
+        self.assertEqual(Utilities().SerializeRaw(link),'<Link/>')
     def test_create_link_with_attributes(self):
         link = Kml().create_link({'id' : 'SampleID',
                                 'href' : 'http://www.mtri.org',
@@ -634,7 +702,7 @@ class TestLinkObject(unittest.TestCase):
                                 #  <viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth]</viewFormat>
                                 'httpquery' : 'http://www.google.com',
                                 })
-        self.assertEqual(kmldom.SerializeRaw(link),
+        self.assertEqual(Utilities().SerializeRaw(link),
             '<Link id="SampleID">'
             +'<href>http://www.mtri.org</href>'
             +'<refreshMode>onChange</refreshMode>'
@@ -654,7 +722,7 @@ class TestLookAtObject(unittest.TestCase):
         lookat = Kml().create_lookat()
 
         self.assertEqual(str(lookat.__class__), "<class 'kmldom.LookAt'>")
-        self.assertEqual(kmldom.SerializeRaw(lookat), '<LookAt/>')
+        self.assertEqual(Utilities().SerializeRaw(lookat), '<LookAt/>')
 
     def test_create_lookat_with_attributes(self):
         lookat = Kml().create_lookat({'id' : 'SampleID',
@@ -667,7 +735,7 @@ class TestLookAtObject(unittest.TestCase):
                                     'altitudemode': 'clamptoground',
                                     #'timestamp' : Kml().create_timestamp({'id':'SampleID'}),#Software does not currently support this
                                     })
-        self.assertEqual(kmldom.SerializeRaw(lookat),
+        self.assertEqual(Utilities().SerializeRaw(lookat),
             '<LookAt id="SampleID">'
             +'<longitude>0</longitude>'
             +'<latitude>0</latitude>'
@@ -687,7 +755,7 @@ class TestMultiGeometryObject(unittest.TestCase):
     def test_create_multigeometry(self):
         multigeometry = Kml().create_multigeometry()
         self.assertEqual(str(multigeometry.__class__),"<class 'kmldom.MultiGeometry'>")
-        self.assertEqual(kmldom.SerializeRaw(multigeometry),'<MultiGeometry/>')
+        self.assertEqual(Utilities().SerializeRaw(multigeometry),'<MultiGeometry/>')
 
     def test_create_multigeometry_complex(self):
             
@@ -702,7 +770,7 @@ class TestMultiGeometryObject(unittest.TestCase):
 
             multigeometry = Kml().create_multigeometry({'linestring':[linestring1,linestring2]})
     
-            self.assertEqual(kmldom.SerializeRaw(multigeometry),
+            self.assertEqual(Utilities().SerializeRaw(multigeometry),
                 '<MultiGeometry>'
                 +'<LineString>'
                 +'<coordinates>40,20,0\n70,90,0\n</coordinates>'
@@ -720,7 +788,7 @@ class TestNetworkLinkObject(unittest.TestCase):
     def test_create_networklink(self):
         networklink = Kml().create_networklink()
         self.assertEqual(str(networklink.__class__),"<class 'kmldom.NetworkLink'>")
-        self.assertEqual(kmldom.SerializeRaw(networklink),'<NetworkLink/>')
+        self.assertEqual(Utilities().SerializeRaw(networklink),'<NetworkLink/>')
 
     def test_create_networklink_with_attributes(self):
         networklink = Kml().create_networklink({'id':'SampleID',
@@ -745,9 +813,9 @@ class TestNetworkLinkObject(unittest.TestCase):
                                     'flytoview':1,
                                     'link':Kml().create_link({'href':'http://www.google.com'}),
                                     })
-        kmldom.SerializeRaw(networklink)
+        Utilities().SerializeRaw(networklink)
 
-        self.assertEqual(kmldom.SerializeRaw(networklink),
+        self.assertEqual(Utilities().SerializeRaw(networklink),
                 '<NetworkLink id="SampleID">'
                 + '<name>SampleName</name>'
                 + '<visibility>1</visibility>'
@@ -764,7 +832,7 @@ class TestNetworkLinkObject(unittest.TestCase):
         networklink = Kml().create_networklink({'timespan' : {'begin' : '1/2/03',
                                                     'end' : '1/3/03'},
                                            })
-        self.assertEqual(kmldom.SerializeRaw(networklink),
+        self.assertEqual(Utilities().SerializeRaw(networklink),
                 '<NetworkLink>'
                 + '<TimeSpan>'
                 + '<begin>1/2/03</begin>'
@@ -788,7 +856,7 @@ class TestOuterBoundaryIs(unittest.TestCase):
         outer = Kml().create_linearring({'coordinates':out_coord,})
         outerboundaryis = Kml().create_outerboundaryis({'linearring':outer},)
         self.assertEqual(str(outerboundaryis.__class__),"<class 'kmldom.OuterBoundaryIs'>")
-        self.assertEqual(kmldom.SerializeRaw(outerboundaryis),
+        self.assertEqual(Utilities().SerializeRaw(outerboundaryis),
             '<outerBoundaryIs>'
             +'<LinearRing>'
             +'<coordinates>0,0,0\n0,3,0\n3,3,0\n3,0,0\n0,0,0\n</coordinates>'
@@ -805,14 +873,14 @@ class TestPairObject(unittest.TestCase):
         pair = Kml().create_pair()
 
         self.assertEqual(str(pair.__class__), "<class 'kmldom.Pair'>")
-        self.assertEqual(kmldom.SerializeRaw(pair), '<Pair/>')
+        self.assertEqual(Utilities().SerializeRaw(pair), '<Pair/>')
     def test_create_pair_with_attributes(self):
     
         pair = Kml().create_pair({'id' : 'SampleID',
                                 'key':1,
                                 'styleUrl':'http://www.mtri.org',
                                 })
-        self.assertEqual(kmldom.SerializeRaw(pair),
+        self.assertEqual(Utilities().SerializeRaw(pair),
             '<Pair id="SampleID">'
             + '<key>highlight</key>'
             + '<styleUrl>http://www.mtri.org</styleUrl>'
@@ -829,7 +897,7 @@ class TestPlacemarkObject(unittest.TestCase):
         placemark = Kml().create_placemark()
 
         self.assertEqual(str(placemark.__class__), "<class 'kmldom.Placemark'>")
-        self.assertEqual(kmldom.SerializeRaw(placemark), '<Placemark/>')
+        self.assertEqual(Utilities().SerializeRaw(placemark), '<Placemark/>')
 
     def test_create_placemark_with_attributes(self):
 
@@ -842,7 +910,7 @@ class TestPlacemarkObject(unittest.TestCase):
                                       #'address'
                                       #'xal:address details'
                                       #'phone number'
-                                      'snippet' : 'Sample Snippet',
+                                      'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
                                       'description' : 'Sample Description',
                                       #'abstract view' (abstract)        
                                       #  'camera' :
@@ -867,12 +935,12 @@ class TestPlacemarkObject(unittest.TestCase):
                                       #  'gx:tour' :
                                         })
         
-        self.assertEqual(kmldom.SerializeRaw(placemark),
+        self.assertEqual(Utilities().SerializeRaw(placemark),
                 '<Placemark id="sampleID">'
                 + '<name>Placemark Name</name>'
                 + '<visibility>0</visibility>'
                 + '<open>1</open>'
-                + '<Snippet>Sample Snippet</Snippet>'
+                + '<Snippet maxLines="10">Sample Snippet</Snippet>'
                 + '<description>Sample Description</description>'
                 + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
                 + '<styleUrl>http://style.sample.com</styleUrl>'
@@ -885,6 +953,7 @@ class TestPlacemarkObject(unittest.TestCase):
         placemark1.set_name('Placemark Name')
         snip = factory.CreateSnippet()
         snip.set_text('Sample Snippet')
+        snip.set_maxlines(10)
         placemark1.set_snippet(snip)
         placemark1.set_description('Sample Description'.encode())
         timestamp = factory.CreateTimeStamp()
@@ -901,7 +970,7 @@ class TestPlacemarkObject(unittest.TestCase):
         # generate a placemark using pylibkml
         placemark2 = Kml().create_placemark({
                         'name' : 'Placemark Name',
-                        'snippet' : 'Sample Snippet',
+                        'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
                         'description' : 'Sample Description',
                         'timestamp' : {'when': '5/19/2009'},
                         'point' :  Kml().create_point({
@@ -911,8 +980,8 @@ class TestPlacemarkObject(unittest.TestCase):
                             })
                          })
 
-        self.assertEqual(kmldom.SerializeRaw(placemark1),
-                         kmldom.SerializeRaw(placemark2))
+        self.assertEqual(Utilities().SerializeRaw(placemark1),
+                         Utilities().SerializeRaw(placemark2))
 
 
     def test_create_placemark_with_timespan(self):
@@ -920,7 +989,7 @@ class TestPlacemarkObject(unittest.TestCase):
         placemark = Kml().create_placemark({'timespan' : {'begin' : '1/2/03',
                                                             'end' : '1/3/03'},
                                            })
-        self.assertEqual(kmldom.SerializeRaw(placemark),
+        self.assertEqual(Utilities().SerializeRaw(placemark),
                 '<Placemark>'
                 + '<TimeSpan>'
                 + '<begin>1/2/03</begin>'
@@ -938,7 +1007,7 @@ class TestPointObject(unittest.TestCase):
         point = Kml().create_point()
 
         self.assertEqual(str(point.__class__), "<class 'kmldom.Point'>")
-        self.assertEqual(kmldom.SerializeRaw(point), '<Point/>')  
+        self.assertEqual(Utilities().SerializeRaw(point), '<Point/>')  
 
     def test_create_point_with_attributes(self):
         point = Kml().create_point({
@@ -948,7 +1017,7 @@ class TestPointObject(unittest.TestCase):
                         'coordinates' : Kml().create_coordinates(-120,40),
                     })
 
-        self.assertEquals(kmldom.SerializeRaw(point),
+        self.assertEquals(Utilities().SerializeRaw(point),
                     '<Point id="Sample ID">'
                     + '<extrude>1</extrude>'
                     + '<altitudeMode>relativeToGround</altitudeMode>'
@@ -967,7 +1036,7 @@ class TestPolygonObject(unittest.TestCase):
         polygon = Kml().create_polygon()
 
         self.assertEqual(str(polygon.__class__), "<class 'kmldom.Polygon'>")
-        self.assertEqual(kmldom.SerializeRaw(polygon), '<Polygon/>')
+        self.assertEqual(Utilities().SerializeRaw(polygon), '<Polygon/>')
 
     def test_create_polygon_with_attributes(self):
 
@@ -1001,7 +1070,7 @@ class TestPolygonObject(unittest.TestCase):
                             #'innerboundaryis':innerBound, #error  in libkml, waiting for update
                             })
 
-        self.assertEquals(kmldom.SerializeRaw(polygon),
+        self.assertEquals(Utilities().SerializeRaw(polygon),
                 '<Polygon id="Sample ID">'
                 + '<extrude>1</extrude>'
                 + '<tessellate>0</tessellate>'
@@ -1019,7 +1088,7 @@ class TestPolyStyleObject(unittest.TestCase):
     def test_create_polystyle(self):
         polystyle = Kml().create_polystyle()
         self.assertEqual(str(polystyle.__class__),"<class 'kmldom.PolyStyle'>")
-        self.assertEqual(kmldom.SerializeRaw(polystyle),'<PolyStyle/>')
+        self.assertEqual(Utilities().SerializeRaw(polystyle),'<PolyStyle/>')
 
     def test_create_polystyle_with_attributes(self):
         polystyle = Kml().create_polystyle({'id' : 'SampleID',
@@ -1028,7 +1097,7 @@ class TestPolyStyleObject(unittest.TestCase):
                                             'fill' : 1,
                                             'outline' : 1,
                                             })
-        self.assertEquals(kmldom.SerializeRaw(polystyle),
+        self.assertEquals(Utilities().SerializeRaw(polystyle),
             '<PolyStyle id="SampleID">'
             + '<color>ff0000ff</color>'
             + '<colorMode>normal</colorMode>'
@@ -1045,7 +1114,7 @@ class TestStyleMap(unittest.TestCase):
     def test_create_stylemap(self):
         stylemap = Kml().create_stylemap()
         self.assertEqual(str(stylemap.__class__), "<class 'kmldom.StyleMap'>")
-        self.assertEqual(kmldom.SerializeRaw(stylemap), '<StyleMap/>')
+        self.assertEqual(Utilities().SerializeRaw(stylemap), '<StyleMap/>')
 
     def test_create_stylemap_with_attributes(self):
         
@@ -1053,7 +1122,7 @@ class TestStyleMap(unittest.TestCase):
         
         stylemap = Kml().create_stylemap({'id':'SampleID',
                                         'pair':pair,})
-        self.assertEquals(kmldom.SerializeRaw(stylemap),
+        self.assertEquals(Utilities().SerializeRaw(stylemap),
             '<StyleMap id="SampleID">'
             + '<Pair><key>normal</key></Pair>'
             + '</StyleMap>')
@@ -1068,7 +1137,7 @@ class TestStyleObject(unittest.TestCase):
         
         style = Kml().create_style({'id' : 'sample_id'})
 
-        self.assertEquals(kmldom.SerializeRaw(style),'<Style id="sample_id"/>')
+        self.assertEquals(Utilities().SerializeRaw(style),'<Style id="sample_id"/>')
 
 #    def test_create_balloonstyle(self):
 #        id_= 'sample_id'
@@ -1087,7 +1156,7 @@ class TestStyleObject(unittest.TestCase):
 #                text=text,
 #                displaymode=displaymode,
 #            )
-#        self.assertEquals(kmldom.SerializeRaw(style),
+#        self.assertEquals(Utilities().SerializeRaw(style),
 #                '<BalloonStyle id="sample_id">'
 #                '<bgColor>ff0000ff</bgColor>'
 #                '<textColor>ffff00ff</textColor>'
@@ -1103,13 +1172,13 @@ class TestTimeSpan(unittest.TestCase):
     def test_create_timespan(self):
         timespan = Kml().create_timespan()
         self.assertEqual(str(timespan.__class__), "<class 'kmldom.TimeSpan'>")
-        self.assertEqual(kmldom.SerializeRaw(timespan), '<TimeSpan/>')
+        self.assertEqual(Utilities().SerializeRaw(timespan), '<TimeSpan/>')
     def test_create_timespan_with_attributes(self):
         timespan = Kml().create_timespan({'id' : 'SampleID',
                                         'begin': '1986',
                                         'end' : '2009',
                                         })
-        self.assertEquals(kmldom.SerializeRaw(timespan),
+        self.assertEquals(Utilities().SerializeRaw(timespan),
             '<TimeSpan id="SampleID">'
             +'<begin>1986</begin>'
             +'<end>2009</end>'
@@ -1124,13 +1193,13 @@ class TestTimeStamp(unittest.TestCase):
     def test_create_timestamp(self):
         timestamp = Kml().create_timestamp()
         self.assertEqual(str(timestamp.__class__), "<class 'kmldom.TimeStamp'>")
-        self.assertEqual(kmldom.SerializeRaw(timestamp), '<TimeStamp/>')
+        self.assertEqual(Utilities().SerializeRaw(timestamp), '<TimeStamp/>')
 
     def test_create_timestamp_with_attributes(self):
         timestamp = Kml().create_timestamp({'id' : 'SampleID',
                                         'when' : '2009',
                                         })
-        self.assertEquals(kmldom.SerializeRaw(timestamp),
+        self.assertEquals(Utilities().SerializeRaw(timestamp),
             '<TimeStamp id="SampleID">'
             +'<when>2009</when>'
             +'</TimeStamp>')
@@ -1155,13 +1224,13 @@ class TestCompositeTests(unittest.TestCase):
                                         Kml().create_folder(
                                             {'name' : 'Inner Folder 2',
                                              'visibility' : False,
-                                             'snippet' : 'Sample Snippet',
+                                             'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
                                              'description' : '<h1>Hello World!</h1>', 
                                             })],
                             })
-        #print kmldom.SerializeRaw(nested_folder)
+        #print Utilities().SerializeRaw(nested_folder)
         
-        self.assertEquals(kmldom.SerializeRaw(nested_folder),
+        self.assertEquals(Utilities().SerializeRaw(nested_folder),
                     '<Folder>'
                         + '<name>Outer Folder</name>'
                         + '<open>1</open>'
@@ -1171,7 +1240,7 @@ class TestCompositeTests(unittest.TestCase):
                         + '<Folder>'
                             + '<name>Inner Folder 2</name>'
                             + '<visibility>0</visibility>'
-                            + '<Snippet>Sample Snippet</Snippet>'
+                            + '<Snippet maxLines="10">Sample Snippet</Snippet>'
                             + '<description><![CDATA[<h1>Hello World!</h1>]]></description>'
                         + '</Folder>'
                     + '</Folder>')
@@ -1198,7 +1267,7 @@ class TestCompositeTests(unittest.TestCase):
         inner_folder_2.set_description('<h1>Hello World!</h1>')
         nested_folder.add_feature(inner_folder_2)
         
-        self.assertEquals(kmldom.SerializeRaw(nested_folder),
+        self.assertEquals(Utilities().SerializeRaw(nested_folder),
             '<Folder>'
                 + '<name>Outer Folder</name>'
                 + '<open>1</open>'
@@ -1271,7 +1340,7 @@ class TestComplex(unittest.TestCase):
                         'open' : 1,
                         'folder' : folder,
                     })
-        #print kmldom.SerializeRaw(document)
+        #print Utilities().SerializeRaw(document)
 
 #class TestRonsApartment(unittest.TestCase):
 #    def test:

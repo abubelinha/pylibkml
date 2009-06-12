@@ -387,7 +387,8 @@ class Kml():
         """
         Processes the attributes that are part of the abstract feature element
         """
-        # process  abstract element attributes  
+        # process  abstract element attributes
+        
         feature = self.process_object_attributes(feature, params)  
         for key in params:
             if key == 'name':
@@ -401,9 +402,7 @@ class Kml():
             elif key == 'phonenumber':
                 feature.set_phonenumber(params[key])
             elif key == 'snippet':
-                snip = factory.CreateSnippet()
-                snip.set_text(params[key])
-                feature.set_snippet(snip)
+                feature.set_snippet(params[key])
             elif key == 'description':
                 feature.set_description(params[key].encode())
             elif (key == 'lookat'):
@@ -441,6 +440,10 @@ class Kml():
                 feature.set_extendeddata(params[key])
             elif key == 'gxballoonvisibility':
                 feature.set_gx_balloonvisibility(params[key])
+            elif key == 'atomauthor':
+                feature.set_atomauthor(params[key])
+            elif key == 'atomlink':
+                feature.set_atomlink(params[key])
         return feature
 
     """ --------------------------------------------------------------
@@ -1788,6 +1791,22 @@ class Kml():
                 elif params[key] == 'pixels':
                     size.set_yunits(kmldom.UNITS_PIXELS)
         return size
+
+    """ --------------------------------------------------------------
+    <Snippet> element
+    
+    Ref:
+    http://code.google.com/apis/kml/documentation/kmlreference.html#snippet
+    """        
+    def create_snippet(self, params = {} ):
+    
+        snippet = factory.CreateSnippet()
+        for key in params:
+            if key == 'maxlines':
+                snippet.set_maxlines(params[key])
+            elif key == 'text':
+                snippet.set_text(params[key])
+        return snippet
 
     """ --------------------------------------------------------------
     <Style> element
