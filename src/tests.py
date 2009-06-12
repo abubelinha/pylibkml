@@ -1150,10 +1150,11 @@ class TestLookAtObject(unittest.TestCase):
                                     'tilt':0,
                                     'range':0,
                                     'altitudemode': 'clamptoground',
-                                    #'timestamp' : Kml().create_timestamp({'id':'SampleID'}),#Software does not currently support this
+                                    'gxtimestamp' : Kml().create_gxtimestamp({'when':'2009-06-03'}),
                                     })
         self.assertEqual(Utilities().SerializeRaw(lookat),
             '<LookAt id="SampleID">'
+            +'<gx:TimeStamp><when>2009-06-03</when></gx:TimeStamp>'
             +'<longitude>0</longitude>'
             +'<latitude>0</latitude>'
             +'<altitude>0</altitude>'
@@ -1164,7 +1165,33 @@ class TestLookAtObject(unittest.TestCase):
             +'</LookAt>'
             )
 
+class TestModelObject(unittest.TestCase):
+    def setUp(self):
+        pass
 
+    def test_create_model(self):
+        model = Kml().create_model()
+        self.assertEqual(str(model.__class__),"<class 'kmldom.Model'>")
+        self.assertEqual(Utilities().SerializeRaw(model),'<Model/>')
+
+    def test_create_model_complex(self):
+        model = Kml().create_model({'altitudemode':'absolute',
+                                    'gxaltitudemode':'clamptoseafloor',
+                                    'location':Kml().create_location(),
+                                    'orientation':Kml().create_orientation(),
+                                    'scale':Kml().create_scale(),
+                                    'link':Kml().create_link(),
+                                    'resourcemap':Kml().create_resourcemap()})
+        self.assertEqual(Utilities().SerializeRaw(model),'<Model>'
+            +'<altitudeMode>absolute</altitudeMode>'
+            +'<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>'
+            +'<Location/>'
+            +'<Orientation/>'
+            +'<Scale/>'
+            +'<Link/>'
+            +'<ResourceMap/>'
+            +'</Model>')
+            
 class TestMultiGeometryObject(unittest.TestCase):
     def setUp(self):
         pass
@@ -1208,37 +1235,14 @@ class TestNetworkLinkObject(unittest.TestCase):
         self.assertEqual(Utilities().SerializeRaw(networklink),'<NetworkLink/>')
 
     def test_create_networklink_with_attributes(self):
-        networklink = Kml().create_networklink({'id':'SampleID',
-                                    'name':'SampleName',
-                                    'visibility':1,
-                                    'open':1,
-                                    #  <atom:author>...<atom:author>         <!-- xmlns:atom -->
-                                    #  <atom:link>...</atom:link>            <!-- xmlns:atom -->
-                                    #  <address>...</address>                <!-- string -->
-                                    #  <xal:AddressDetails>...</xal:AddressDetails>  <!-- xmlns:xal -->
-                                    #  <phoneNumber>...</phoneNumber>        <!-- string -->
-                                    #  <Snippet maxLines="2">...</Snippet>   <!-- string -->
-                                    'description':'This is a test NetworkLink',
-                                    #  <AbstractView>...</AbstractView>      <!-- Camera or LookAt -->
-                                    'timestamp' : {'when': '5/19/2009'},
-                                    #  <styleUrl>...</styleUrl>              <!-- anyURI -->
-                                    #  <StyleSelector>...</StyleSelector>
-                                    #  <Region>...</Region>
-                                    #  <Metadata>...</Metadata>              <!-- deprecated in KML 2.2 -->
-                                    #  <ExtendedData>...</ExtendedData>      <!-- new in KML 2.2 -->
-                                    'refreshvisibility':1,
+        networklink = Kml().create_networklink({'refreshvisibility':1,
                                     'flytoview':1,
                                     'link':Kml().create_link({'href':'http://www.google.com'}),
                                     })
         Utilities().SerializeRaw(networklink)
 
         self.assertEqual(Utilities().SerializeRaw(networklink),
-                '<NetworkLink id="SampleID">'
-                + '<name>SampleName</name>'
-                + '<visibility>1</visibility>'
-                + '<open>1</open>'
-                + '<description>This is a test NetworkLink</description>'
-                + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
+                '<NetworkLink>'
                 + '<refreshVisibility>1</refreshVisibility>'
                 + '<flyToView>1</flyToView>'
                 + '<Link><href>http://www.google.com</href></Link>'
@@ -1257,6 +1261,40 @@ class TestNetworkLinkObject(unittest.TestCase):
                 + '</TimeSpan>'
                 + '</NetworkLink>')
 
+class TestNetworkLinkControlObject(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_networklinkcontrol(self):
+        networklinkcontrol = Kml().create_networklinkcontrol()
+        self.assertEqual(str(networklinkcontrol.__class__),"<class 'kmldom.NetworkLinkControl'>")
+        self.assertEqual(Utilities().SerializeRaw(networklinkcontrol),'<NetworkLinkControl/>')
+
+    def test_create_networklink_with_attributes(self):
+        networklinkcontrol = Kml().create_networklinkcontrol({'minrefreshperiod':0,
+                                                                'maxsessionlength':100,
+                                                                'cookie':'SampleCookie',
+                                                                'message':'SampleMessage',
+                                                                'linkname':'www.google.com',
+                                                                'linkdescription':'Sample Link Description',
+                                                                'linksnippet' : Kml().create_linksnippet({'maxlines':2,'text':'Sample Snippet'}),
+                                                                'expires': '2009-06-23',
+                                                                'update':Kml().create_update(),
+                                                                'camera':Kml().create_camera()
+                                                                })
+        print Utilities().SerializeRaw(networklinkcontrol)
+        self.assertEqual(Utilities().SerializeRaw(networklinkcontrol),'<NetworkLinkControl>'
+                +'<minRefreshPeriod>0</minRefreshPeriod>'
+                +'<maxSessionLength>100</maxSessionLength>'
+                +'<cookie>SampleCookie</cookie>'
+                +'<message>SampleMessage</message>'
+                +'<linkName>www.google.com</linkName>'
+                +'<linkDescription>Sample Link Description</linkDescription>'
+                +'<linkSnippet maxLines="2">Sample Snippet</linkSnippet>'
+                +'<expires>2009-06-23</expires>'
+                +'<Update/>'
+                +'<Camera/>'
+                +'</NetworkLinkControl>')
 
 class TestOuterBoundaryIs(unittest.TestCase):
     def setUp(self):

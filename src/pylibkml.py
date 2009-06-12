@@ -1085,6 +1085,22 @@ class Kml():
         return link
 
     """ --------------------------------------------------------------
+    <LinkSnippet> element
+    
+    Ref:
+    http://code.google.com/apis/kml/documentation/kmlreference.html#linksnippet
+    """
+    def create_linksnippet(self,params={}):
+        linksnippet = factory.CreateLinkSnippet()
+
+        for key in params:
+            if key == 'maxlines':
+                linksnippet.set_maxlines(params[key])
+            elif key == 'text':
+                linksnippet.set_text(params[key])
+        return linksnippet
+
+    """ --------------------------------------------------------------
     <ListStyle> element
     
     Ref:
