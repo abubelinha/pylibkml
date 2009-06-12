@@ -965,7 +965,7 @@ class Kml():
     <LinearRing> element
     
     Ref:
-    http://code.google.com/apis/kml/documentation/kmlreference.html#linestring
+    http://code.google.com/apis/kml/documentation/kmlreference.html#linearring
     """
     def create_linearring(self,params = {}):
 
@@ -1136,7 +1136,7 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#lod
     """
     def create_lod(self,params={}):
-        lod = factory.CreateLod(self,params={})
+        lod = factory.CreateLod()
         lod = self.process_object_attributes(lod,params)
         
         for key in params:

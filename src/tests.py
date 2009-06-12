@@ -971,6 +971,7 @@ class TestLinearRingObject(unittest.TestCase):
                             'extrude': 1,
                             'tessellate': 0,
                             'altitudemode': 'relativetoground',
+                            'gxaltitudemode':'clamptoseafloor',
                             'coordinates': coordinates,
                             })
         self.assertEquals(Utilities().SerializeRaw(linearring),
@@ -978,6 +979,7 @@ class TestLinearRingObject(unittest.TestCase):
                     + '<extrude>1</extrude>'
                     + '<tessellate>0</tessellate>'
                     + '<altitudeMode>relativeToGround</altitudeMode>'
+                    + '<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>'
                     + '<coordinates>0,0,0\n1,0,0\n0,1,0\n0,0,0\n</coordinates>'
                     + '</LinearRing>')
 
@@ -1004,12 +1006,14 @@ class TestLineStringObject(unittest.TestCase):
                             'extrude':1,
                             'tessellate':0,
                             'altitudemode': 'relativetoground',
+                            'gxaltitudemode':'clamptoseafloor',
                             'coordinates': coordinates,})                            
         self.assertEquals(Utilities().SerializeRaw(linestring),
                     '<LineString id="Sample ID">'
                     + '<extrude>1</extrude>'
                     + '<tessellate>0</tessellate>'
                     + '<altitudeMode>relativeToGround</altitudeMode>'
+                    + '<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>'
                     + '<coordinates>0,0,0\n1,0,0\n</coordinates>'
                     + '</LineString>')
 
@@ -1037,7 +1041,6 @@ class TestLineStyleObject(unittest.TestCase):
             + '<width>10</width>'
             + '</LineStyle>')
 
-
 class TestLinkObject(unittest.TestCase):
     def setUp(self):
         pass
@@ -1053,7 +1056,7 @@ class TestLinkObject(unittest.TestCase):
                                 'viewrefreshmode' : 'never', #viewRefreshModeEnum: never, onStop, onRequest, onRegion
                                 'viewrefreshtime' : 0,
                                 'viewboundscale' : 1,
-                                #  <viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth]</viewFormat>
+                                'viewformat':'BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth];CAMERA=\[lookatLon],[lookatLat],[lookatRange],[lookatTilt],[lookatHeading];VIEW=\[horizFov],[vertFov],[horizPixels],[vertPixels],[terrainEnabled]',
                                 'httpquery' : 'http://www.google.com',
                                 })
         self.assertEqual(Utilities().SerializeRaw(link),
@@ -1064,10 +1067,70 @@ class TestLinkObject(unittest.TestCase):
             +'<viewRefreshMode>never</viewRefreshMode>'
             +'<viewRefreshTime>0</viewRefreshTime>'
             +'<viewBoundScale>1</viewBoundScale>'
+            +'<viewFormat>BBOX=[bboxWest],[bboxSouth],[bboxEast],[bboxNorth];CAMERA=\[lookatLon],[lookatLat],[lookatRange],[lookatTilt],[lookatHeading];VIEW=\[horizFov],[vertFov],[horizPixels],[vertPixels],[terrainEnabled]</viewFormat>'
             +'<httpQuery>http://www.google.com</httpQuery>'
             +'</Link>')
 
-
+class TestListStyleObject(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_create_liststyle(self):
+        liststyle = Kml().create_liststyle()
+        self.assertEqual(str(liststyle.__class__),"<class 'kmldom.ListStyle'>")
+        self.assertEqual(Utilities().SerializeRaw(liststyle),'<ListStyle/>')
+    def test_create_liststyle_with_attributes(self):
+        liststyle = Kml().create_liststyle({'id' : 'SampleID',
+                                'listitemtype' : 'check',
+                                'bgcolor' : 'ffffffff',
+                                'itemicon' : Kml().create_itemicon(),
+                                })
+        self.assertEqual(Utilities().SerializeRaw(liststyle),
+            '<ListStyle id="SampleID">'
+            +'<listItemType>check</listItemType>'
+            +'<bgColor>ffffffff</bgColor>'
+            +'<ItemIcon/>'
+            +'</ListStyle>')
+            
+class TestLocation(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_create_location(self):
+        location = Kml().create_location()
+        self.assertEqual(str(location.__class__),"<class 'kmldom.Location'>")
+        self.assertEqual(Utilities().SerializeRaw(location),'<Location/>')
+    def test_create_location_with_attributes(self):
+        location = Kml().create_location({'latitude' : 38,
+                                'longitude' : 77,
+                                'altitude' : 10,
+                                })
+        self.assertEqual(Utilities().SerializeRaw(location),
+            '<Location>'
+            +'<longitude>77</longitude>'
+            +'<latitude>38</latitude>'
+            +'<altitude>10</altitude>'
+            +'</Location>')
+            
+class TestLod(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_create_lod(self):
+        lod = Kml().create_lod()
+        self.assertEqual(str(lod.__class__),"<class 'kmldom.Lod'>")
+        self.assertEqual(Utilities().SerializeRaw(lod),'<Lod/>')
+    def test_create_lod_with_attributes(self):
+        lod = Kml().create_lod({'minlodpixels' : 0,
+                                'maxlodpixels' : 50,
+                                'minfadeextent' : 10,
+                                'maxfadeextent' : 20,
+                                })
+        self.assertEqual(Utilities().SerializeRaw(lod),
+            '<Lod>'
+            +'<minLodPixels>0</minLodPixels>'
+            +'<maxLodPixels>50</maxLodPixels>'
+            +'<minFadeExtent>10</minFadeExtent>'
+            +'<maxFadeExtent>20</maxFadeExtent>'
+            +'</Lod>')
+            
 class TestLookAtObject(unittest.TestCase):
     def setUp(self):
         pass
