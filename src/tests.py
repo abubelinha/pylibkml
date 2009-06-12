@@ -464,11 +464,25 @@ class TestGxFlyTo(unittest.TestCase):
             +'<LookAt/>'
             +'</gx:FlyTo>')
 
+class TestGxLatLonQuad(unittest.TestCase):
+    
+    def setUp(self):
+        pass
+    def test_create_gxlatlonquad(self):
+        gxlatlonquad = Kml().create_gxlatlonquad()
+        self.assertEqual(str(gxlatlonquad.__class__), "<class 'kmldom.GxLatLonQuad'>")
+        self.assertEqual(Utilities().SerializeRaw(gxlatlonquad), '<gx:LatLonQuad/>')
+        
+    def test_create_gxlatlonquad_with_attributes(self):
+        gxlatlonquad = Kml().create_gxlatlonquad({'coordinates':Kml().create_coordinates(0,0,0)})
+        self.assertEqual(Utilities().SerializeRaw(gxlatlonquad),'<gx:LatLonQuad>'
+            +'<coordinates>0,0,0\n</coordinates>'
+            +'</gx:LatLonQuad>')
+
 class TestGxPlaylist(unittest.TestCase):
 
     def setUp(self):
         pass
-
     def test_create_gxplaylist(self):
         gxplaylist = Kml().create_gxplaylist()
         self.assertEqual(str(gxplaylist.__class__), "<class 'kmldom.GxPlaylist'>")
@@ -838,6 +852,97 @@ class TestKml(unittest.TestCase):
                     + '<NetworkLinkControl/>'
                     + '<Folder/>'
                     + '</kml>'
+                )
+
+class TestLabelStyle(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_labelstyle(self):
+        labelstyle = Kml().create_labelstyle()
+
+        self.assertEqual(str(labelstyle.__class__), "<class 'kmldom.LabelStyle'>")
+        self.assertEqual(Utilities().SerializeRaw(labelstyle), '<LabelStyle/>')  
+
+    def test_create_labelstyle_with_attributes(self):
+    
+        labelstyle = Kml().create_labelstyle({
+                        'scale':10,
+                        'color':'ffffffff',
+                        'colormode':'normal',
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(labelstyle),
+                    '<LabelStyle>'
+                    + '<color>ffffffff</color>'
+                    + '<colorMode>normal</colorMode>'
+                    + '<scale>10</scale>'
+                    + '</LabelStyle>'
+                )
+
+class TestLatLonAltBox(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_latlonaltbox(self):
+        latlonaltbox = Kml().create_latlonaltbox()
+
+        self.assertEqual(str(latlonaltbox.__class__), "<class 'kmldom.LatLonAltBox'>")
+        self.assertEqual(Utilities().SerializeRaw(latlonaltbox), '<LatLonAltBox/>')  
+
+    def test_create_latlonaltbox_with_attributes(self):
+    
+        latlonaltbox = Kml().create_latlonaltbox({
+                        'north':10,
+                        'south':20,
+                        'east':30,
+                        'west':40,
+                        'minaltitude':0,
+                        'maxaltitude':100
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(latlonaltbox),
+                    '<LatLonAltBox>'
+                    + '<north>10</north>'
+                    + '<south>20</south>'
+                    + '<east>30</east>'
+                    + '<west>40</west>'
+                    + '<minAltitude>0</minAltitude>'
+                    + '<maxAltitude>100</maxAltitude>'
+                    + '</LatLonAltBox>'
+                )
+
+class TestLatLonBox(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_latlonbox(self):
+        latlonbox = Kml().create_latlonbox()
+
+        self.assertEqual(str(latlonbox.__class__), "<class 'kmldom.LatLonBox'>")
+        self.assertEqual(Utilities().SerializeRaw(latlonbox), '<LatLonBox/>')  
+
+    def test_create_latlonbox_with_attributes(self):
+    
+        latlonbox = Kml().create_latlonbox({
+                        'north':10,
+                        'south':20,
+                        'east':30,
+                        'west':40,
+                        'rotation':0,
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(latlonbox),
+                    '<LatLonBox>'
+                    + '<north>10</north>'
+                    + '<south>20</south>'
+                    + '<east>30</east>'
+                    + '<west>40</west>'
+                    + '<rotation>0</rotation>'
+                    + '</LatLonBox>'
                 )
 
 class TestLinearRingObject(unittest.TestCase):

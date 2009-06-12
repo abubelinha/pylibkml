@@ -548,6 +548,22 @@ class Kml():
         return gxflyto
 
     """ --------------------------------------------------------------
+    <gx:LatLonQuad> element
+    
+    Ref:
+    http://code.google.com/apis/kml/documentation/kmlreference.html#gxlatlonquad
+    """
+    def create_gxlatlonquad(self,params={}):
+        
+        gxlatlonquad = factory.CreateGxLatLonQuad()
+        gxlatlonquad = self.process_object_attributes(gxlatlonquad,params)
+        
+        for key in params:
+            if key == 'coordinates':
+                gxlatlonquad.set_coordinates(params[key])
+        return gxlatlonquad
+
+    """ --------------------------------------------------------------
     <gx:PlayList> element
     
     Ref:
@@ -944,21 +960,6 @@ class Kml():
             elif key == 'rotation':
                 latlonbox.set_rotation(params[key])
         return latlonbox
-
-    """ --------------------------------------------------------------
-    <gx:LatLonQuad> element
-    
-    Ref:
-    http://code.google.com/apis/kml/documentation/kmlreference.html#gxlatlonquad
-    """
-    def create_gxlatlonquad(self,params={}):
-        gxlatlonquad = factory.CreateGxLatLonQuad()
-        gxlatlonquad = self.process_object_attributes(self,params)
-        
-        for key in params:
-            if key == 'coordinates':
-                gxlatlonquad.set_coordinates(params[key])
-        return gxlatlonquad
 
     """ --------------------------------------------------------------
     <LinearRing> element
