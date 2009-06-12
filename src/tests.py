@@ -358,12 +358,8 @@ class TestFolderObject(unittest.TestCase):
                             'style':Kml().create_style(),
                             'region':Kml().create_region(),
                             'extendeddata':Kml().create_extendeddata({'data':Kml().create_data()}),
-                                      #    'document' :
-                                      #    'folder' :
-                                      #  'overlay' :
-                                      #  'placemark' :
-                                      #  'network link' :
-                                      #  'gx:tour' :
+                            'document' : [Kml().create_document(),Kml().create_document()],
+                            'folder' : Kml().create_folder()
                                      })
         
         self.assertEqual(Utilities().SerializeRaw(folder),
@@ -379,6 +375,7 @@ class TestFolderObject(unittest.TestCase):
                 + '<styleUrl>#mainstyle</styleUrl>'
                 + '<Style/><Region/>'
                 + '<ExtendedData><Data/></ExtendedData>'
+                + '<Folder/><Document/><Document/>'
                 + '</Folder>')
 
     def test_create_folder_with_timespan(self):

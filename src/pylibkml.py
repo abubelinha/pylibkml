@@ -451,7 +451,7 @@ class Kml():
     def create_folder(self, params = {} ):
     
         folder = factory.CreateFolder()
-
+        
         # process container abstract element attributes  
         folder = self.process_container_attributes(folder, params)
         
@@ -464,12 +464,6 @@ class Kml():
                         folder.add_feature(x)
                 else:
                     folder.add_feature(params[key])
-            elif key == 'gxduration':
-                folder.set_gx_duration(params[key])
-            elif key == 'gxflytomode':
-                folder.set_gx_flytomode(params[key])
-            elif key == 'camera' or key == 'lookat':
-                folder.set_abstractview(params[key])
         return folder
     
     """ --------------------------------------------------------------
