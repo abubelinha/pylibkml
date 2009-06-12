@@ -380,14 +380,14 @@ class TestFolderObject(unittest.TestCase):
 
     def test_create_folder_with_timespan(self):
 
-        folder = Kml().create_folder({'timespan' : {'begin' : '1/2/03',
-                                                    'end' : '1/3/03'},
+        folder = Kml().create_folder({'timespan' : {'begin' : '2003',
+                                                    'end' : '2004'},
                                            })
         self.assertEqual(Utilities().SerializeRaw(folder),
                 '<Folder>'
                 + '<TimeSpan>'
-                + '<begin>1/2/03</begin>'
-                + '<end>1/3/03</end>'
+                + '<begin>2003</begin>'
+                + '<end>2004</end>'
                 + '</TimeSpan>'
                 + '</Folder>')
 
@@ -403,7 +403,132 @@ class TestFolderObject(unittest.TestCase):
                 + '<Folder><name>Inner Folder</name></Folder>'
                 + '</Folder>')
 
+class TestGroundOverlay(unittest.TestCase):
 
+    def setUp(self):
+        pass
+
+    def test_create_groundoverlay(self):
+        groundoverlay = Kml().create_groundoverlay()
+        self.assertEqual(str(groundoverlay.__class__), "<class 'kmldom.GroundOverlay'>")
+        self.assertEqual(Utilities().SerializeRaw(groundoverlay), '<GroundOverlay/>')
+        
+    def test_create_groundoverlay_with_attributes(self):
+        groundoverlay = Kml().create_groundoverlay({'altitude':100,
+                                                    'altitudemode':'absolute',
+                                                    'gxaltitudemode':'relativetoseafloor',
+                                                    'latlonbox':Kml().create_latlonbox()})
+        self.assertEqual(Utilities().SerializeRaw(groundoverlay),'<GroundOverlay>'
+            +'<altitude>100</altitude>'
+            +'<altitudeMode>absolute</altitudeMode>'
+            +'<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>'
+            +'<LatLonBox/>'
+            +'</GroundOverlay>')
+            
+
+class TestGxAnimatedUpdate(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxanimatedupdate(self):
+        gxanimatedupdate = Kml().create_gxanimatedupdate()
+        self.assertEqual(str(gxanimatedupdate.__class__), "<class 'kmldom.GxAnimatedUpdate'>")
+        self.assertEqual(Utilities().SerializeRaw(gxanimatedupdate), '<gx:AnimatedUpdate/>')
+        
+    def test_create_gxanimatedupdate_with_attributes(self):
+        gxanimatedupdate = Kml().create_gxanimatedupdate({'gxduration':100,
+                                                    'update':Kml().create_update()})
+        self.assertEqual(Utilities().SerializeRaw(gxanimatedupdate),'<gx:AnimatedUpdate>'
+            +'<gx:duration>100</gx:duration>'
+            +'<Update/>'
+            +'</gx:AnimatedUpdate>')
+            
+class TestGxFlyTo(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxflyto(self):
+        gxflyto = Kml().create_gxflyto()
+        self.assertEqual(str(gxflyto.__class__), "<class 'kmldom.GxFlyTo'>")
+        self.assertEqual(Utilities().SerializeRaw(gxflyto), '<gx:FlyTo/>')
+        
+    def test_create_gxflyto_with_attributes(self):
+        gxflyto = Kml().create_gxflyto({'gxduration':100,
+                                        'gxflytomode':'bounce',
+                                        'lookat':Kml().create_lookat()})
+        self.assertEqual(Utilities().SerializeRaw(gxflyto),'<gx:FlyTo>'
+            +'<gx:duration>100</gx:duration>'
+            +'<gx:flyToMode>bounce</gx:flyToMode>'
+            +'<LookAt/>'
+            +'</gx:FlyTo>')
+
+class TestGxPlaylist(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxplaylist(self):
+        gxplaylist = Kml().create_gxplaylist()
+        self.assertEqual(str(gxplaylist.__class__), "<class 'kmldom.GxPlaylist'>")
+        self.assertEqual(Utilities().SerializeRaw(gxplaylist), '<gx:Playlist/>')
+        
+    def test_create_gxplaylist_with_attributes(self):
+        gxplaylist = Kml().create_gxplaylist({'gxflyto':[Kml().create_gxflyto(),Kml().create_gxflyto()]})
+        self.assertEqual(Utilities().SerializeRaw(gxplaylist),'<gx:Playlist>'
+            +'<gx:FlyTo/><gx:FlyTo/>'
+            +'</gx:Playlist>')
+            
+class TestGxSoundCue(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxsoundcue(self):
+        gxsoundcue = Kml().create_gxsoundcue()
+        self.assertEqual(str(gxsoundcue.__class__), "<class 'kmldom.GxSoundCue'>")
+        self.assertEqual(Utilities().SerializeRaw(gxsoundcue), '<gx:SoundCue/>')
+        
+    def test_create_gxsoundcue_with_attributes(self):
+        gxsoundcue = Kml().create_gxsoundcue({'href':'www.google.com'})
+        self.assertEqual(Utilities().SerializeRaw(gxsoundcue),'<gx:SoundCue>'
+            +'<href>www.google.com</href>'
+            +'</gx:SoundCue>')
+
+class TestGxTimeSpan(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxtimespan(self):
+        gxtimespan = Kml().create_gxtimespan()
+        self.assertEqual(str(gxtimespan.__class__), "<class 'kmldom.GxTimeSpan'>")
+        self.assertEqual(Utilities().SerializeRaw(gxtimespan), '<gx:TimeSpan/>')
+        
+    def test_create_gxtimespan_with_attributes(self):
+        gxtimespan = Kml().create_gxtimespan({'begin':'2009-06-12','end':'2009-06-13'})
+        self.assertEqual(Utilities().SerializeRaw(gxtimespan),'<gx:TimeSpan>'
+            +'<begin>2009-06-12</begin>'
+            +'<end>2009-06-13</end>'
+            +'</gx:TimeSpan>')
+
+class TestGxTimeStamp(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxtimestamp(self):
+        gxtimestamp = Kml().create_gxtimestamp()
+        self.assertEqual(str(gxtimestamp.__class__), "<class 'kmldom.GxTimeStamp'>")
+        self.assertEqual(Utilities().SerializeRaw(gxtimestamp), '<gx:TimeStamp/>')
+        
+    def test_create_gxtimestamp_with_attributes(self):
+        gxtimestamp = Kml().create_gxtimestamp({'when':'2009-06-12'})
+        self.assertEqual(Utilities().SerializeRaw(gxtimestamp),'<gx:TimeStamp>'
+            +'<when>2009-06-12</when>'
+            +'</gx:TimeStamp>')
+            
 class TestGxTour(unittest.TestCase):
 
     def setUp(self):
@@ -411,10 +536,55 @@ class TestGxTour(unittest.TestCase):
 
     def test_create_gxtour(self):
         gxtour = Kml().create_gxtour()
-
         self.assertEqual(str(gxtour.__class__), "<class 'kmldom.GxTour'>")
         self.assertEqual(Utilities().SerializeRaw(gxtour), '<gx:Tour/>')
+        
+    def test_create_gxtour_with_attributes(self):
+        gxtour = Kml().create_gxtour({'gxplaylist':Kml().create_gxplaylist()})
+        self.assertEqual(Utilities().SerializeRaw(gxtour),'<gx:Tour>'
+            +'<gx:Playlist/>'
+            +'</gx:Tour>')
+            
+class TestGxTourControl(unittest.TestCase):
 
+    def setUp(self):
+        pass
+
+    def test_create_gxtourcontrol(self):
+        gxtourcontrol = Kml().create_gxtourcontrol()
+        self.assertEqual(str(gxtourcontrol.__class__), "<class 'kmldom.GxTourControl'>")
+        self.assertEqual(Utilities().SerializeRaw(gxtourcontrol), '<gx:TourControl/>')
+        
+    def test_create_gxtourcontrol_with_attributes(self):
+        gxtourcontrol = Kml().create_gxtourcontrol({'gxplaymode':'pause'})
+        self.assertEqual(Utilities().SerializeRaw(gxtourcontrol),'<gx:TourControl>'
+            +'<gx:playMode>pause</gx:playMode>'
+            +'</gx:TourControl>')
+            
+class TestGxWait(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_gxduration(self):
+        gxwait = Kml().create_gxwait()
+        self.assertEqual(str(gxwait.__class__), "<class 'kmldom.GxWait'>")
+        self.assertEqual(Utilities().SerializeRaw(gxwait), '<gx:Wait/>')
+        
+    def test_create_gxwait_with_attributes(self):
+        gxwait = Kml().create_gxwait({'gxduration':100})
+        self.assertEqual(Utilities().SerializeRaw(gxwait),'<gx:Wait>'
+            +'<gx:duration>100</gx:duration>'
+            +'</gx:Wait>')
+
+class TestHotSpot(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_hotspot_with_attributes(self):
+        hotspot = Kml().create_hotspot(0,10,'fraction','insetpixels')
+        self.assertEqual(Utilities().SerializeRaw(hotspot),'<hotSpot x="0" xunits="fraction" y="10" yunits="insetPixels"/>')
 
 class TestHotSpotObject(unittest.TestCase):
 
