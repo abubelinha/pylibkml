@@ -702,13 +702,13 @@ class TestIconStyleObject(unittest.TestCase):
     def test_create_iconstyle_with_non_enumerated_types(self):
         
         style = Kml().create_iconstyle({
-                        #'color' : kmlbase.Color32(255,0,0,255),
+                        'color' : 'ff0000ff',
                         'colormode' : 'random',
                     })
 
         self.assertEquals(Utilities().SerializeRaw(style),
                     '<IconStyle>'
-                    #+ '<color>ff0000ff</color>' TODO - allow for HEX colors
+                    + '<color>ff0000ff</color>'
                     + '<colorMode>random</colorMode>'
                     + '</IconStyle>'
                 )
@@ -737,6 +737,34 @@ class TestIconStyleIconObject(unittest.TestCase):
                     + '</Icon>'
                 )
 
+class TestImagePyramid(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_imagepyramid(self):
+        imagepyramid = Kml().create_imagepyramid()
+
+        self.assertEqual(str(imagepyramid.__class__), "<class 'kmldom.ImagePyramid'>")
+        self.assertEqual(Utilities().SerializeRaw(imagepyramid), '<ImagePyramid/>')  
+
+    def test_create_imagepyramid_with_attributes(self):
+    
+        imagepyramid = Kml().create_imagepyramid({
+                        'tilesize':100,
+                        'maxwidth':2,
+                        'maxheight':1,
+                        'gridorigin':'lowerleft',
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(imagepyramid),
+                    '<ImagePyramid>'
+                    + '<tileSize>100</tileSize>'
+                    + '<maxWidth>2</maxWidth>'
+                    + '<maxHeight>1</maxHeight>'
+                    + '<gridOrigin>lowerLeft</gridOrigin>'
+                    + '</ImagePyramid>'
+                )
 
 class TestInnerBoundaryIs(unittest.TestCase):
 
@@ -762,6 +790,55 @@ class TestInnerBoundaryIs(unittest.TestCase):
             +'</LinearRing>'
             +'</innerBoundaryIs>')
 
+class TestItemIcon(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_itemicon(self):
+        itemicon = Kml().create_itemicon()
+
+        self.assertEqual(str(itemicon.__class__), "<class 'kmldom.ItemIcon'>")
+        self.assertEqual(Utilities().SerializeRaw(itemicon), '<ItemIcon/>')  
+
+    def test_create_itemicon_with_attributes(self):
+    
+        itemicon = Kml().create_itemicon({
+                        'href':'www.google.com',
+#                        'state':'open',
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(itemicon),
+                    '<ItemIcon>'
+                    + '<href>www.google.com</href>'
+                    + '</ItemIcon>'
+                )
+
+class TestKml(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_kml(self):
+        kml = Kml().create_kml()
+
+        self.assertEqual(str(kml.__class__), "<class 'kmldom.Kml'>")
+        self.assertEqual(Utilities().SerializeRaw(kml), '<kml/>')  
+
+    def test_create_kml_with_attributes(self):
+    
+        kml = Kml().create_kml({
+                        'networklinkcontrol':Kml().create_networklinkcontrol(),
+                        'hint':'Sample Hint',
+                        'folder':Kml().create_folder(),
+                    })
+
+        self.assertEquals(Utilities().SerializeRaw(kml),
+                    '<kml hint="Sample Hint">'
+                    + '<NetworkLinkControl/>'
+                    + '<Folder/>'
+                    + '</kml>'
+                )
 
 class TestLinearRingObject(unittest.TestCase):
 

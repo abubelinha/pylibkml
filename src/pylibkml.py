@@ -846,8 +846,21 @@ class Kml():
         for key in params:
             if key == 'href':
                 itemicon.set_href(params[key])
-#            elif key == 'state':
-#                itemicon.set_state(params[key]) <- Unimplememted in libkml 1.0
+            elif key == 'state':
+                if params[key] == 'open':
+                    itemicon.set_state(kmldom.STATE_OPEN)
+                elif params[key] == 'closed':
+                    itemicon.set_state(kmldom.STATE_CLOSED)
+                elif params[key] == 'error':
+                    itemicon.set_state(kmldom.STATE_ERROR)
+                elif params[key] == 'fetching0':
+                    itemicon.set_state(kmldom.STATE_FETCHING0)
+                elif params[key] == 'fetching1':
+                    itemicon.set_state(kmldom.STATE_FETCHING1)
+                elif params[key] == 'fetching2':
+                    itemicon.set_state(kmldom.STATE_FETCHING2)
+                else:
+                    itemicon.set_state(params[key])
         return itemicon
 
     """ --------------------------------------------------------------
