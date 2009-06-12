@@ -344,9 +344,9 @@ class Kml():
                 if isinstance(params[key],list):
                     # process multiple schema if needed
                     for x in params[key]:
-                        schema.add_schema(x)
+                        document.add_schema(x)
                 else:
-                    schema.add_schema(params[key])
+                    document.add_schema(params[key])
                     
         document = self.process_container_attributes(document,params,1)
         return document
@@ -405,9 +405,7 @@ class Kml():
                 feature.set_snippet(params[key])
             elif key == 'description':
                 feature.set_description(params[key].encode())
-            elif (key == 'lookat'):
-                feature.set_abstractview(params[key])
-            elif (key == 'camera'):
+            elif key == 'lookat' or key == 'camera':
                 feature.set_abstractview(params[key])
             elif (key == 'timespan'):
                 if type(params[key]) == DictType:

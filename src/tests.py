@@ -251,14 +251,13 @@ class TestDocumentObject(unittest.TestCase):
                             'phonenumber':'867-5309',
                             'snippet': Kml().create_snippet({'maxlines':10,'text':'Sample Text'}),
                             'description' : 'Sample Document',
-                            #  <AbstractView>...</AbstractView>      <!-- Camera or LookAt -->
+                            'camera':Kml().create_camera(),
                             'timestamp' : {'when': '5/19/2009'},
-                            #  <styleUrl>...</styleUrl>              <!-- anyURI -->
-                            #  <StyleSelector>...</StyleSelector>
-                            #  <Region>...</Region>
-                            #  <Metadata>...</Metadata>              <!-- deprecated in KML 2.2 -->
-                            #  <ExtendedData>...</ExtendedData>      <!-- new in KML 2.2 -->
-                            #  <!-- 0 or more Schema elements -->
+                            'styleurl':'#mainstyle',
+                            'style':[Kml().create_style(),Kml().create_style()],
+                            'region':Kml().create_region(),
+                            'extendeddata':Kml().create_extendeddata({'data':Kml().create_data()}),
+                            'schema':[Kml().create_schema(),Kml().create_schema()],
                             'placemark' : Kml().create_placemark({'id':'placemark',}),
                             'networklink' : Kml().create_networklink({'id' : 'networklink',}),
                         })
@@ -273,7 +272,13 @@ class TestDocumentObject(unittest.TestCase):
 #                + '<phoneNumber>867-5309</phoneNumber>'
                 + '<Snippet maxLines="10">Sample Text</Snippet>'
                 + '<description>Sample Document</description>'
+                + '<Camera/>'
                 + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
+                + '<styleUrl>#mainstyle</styleUrl>'
+                + '<Style/><Style/>'
+                + '<Region/>'
+                + '<ExtendedData><Data/></ExtendedData>'
+                + '<Schema/><Schema/>'
                 + '<NetworkLink id="networklink"/>'
                 + '<Placemark id="placemark"/>'
                 + '</Document>')
