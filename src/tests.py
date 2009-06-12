@@ -252,9 +252,10 @@ class TestDocumentObject(unittest.TestCase):
                             'snippet': Kml().create_snippet({'maxlines':10,'text':'Sample Text'}),
                             'description' : 'Sample Document',
                             'camera':Kml().create_camera(),
-                            'timestamp' : {'when': '5/19/2009'},
+                            'timestamp' : {'when': '2009-05-19'},
                             'styleurl':'#mainstyle',
                             'style':[Kml().create_style(),Kml().create_style()],
+                            'stylemap':[Kml().create_stylemap(),Kml().create_stylemap()],
                             'region':Kml().create_region(),
                             'extendeddata':Kml().create_extendeddata({'data':Kml().create_data()}),
                             'schema':[Kml().create_schema(),Kml().create_schema()],
@@ -273,9 +274,10 @@ class TestDocumentObject(unittest.TestCase):
                 + '<Snippet maxLines="10">Sample Text</Snippet>'
                 + '<description>Sample Document</description>'
                 + '<Camera/>'
-                + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
+                + '<TimeStamp><when>2009-05-19</when></TimeStamp>'
                 + '<styleUrl>#mainstyle</styleUrl>'
                 + '<Style/><Style/>'
+                + '<StyleMap/><StyleMap/>'
                 + '<Region/>'
                 + '<ExtendedData><Data/></ExtendedData>'
                 + '<Schema/><Schema/>'
@@ -285,14 +287,14 @@ class TestDocumentObject(unittest.TestCase):
 
     def test_create_document_with_timespan(self):
 
-        document = Kml().create_document({'timespan' : {'begin' : '1/2/03',
-                                                        'end'   : '1/3/03'},
+        document = Kml().create_document({'timespan' : {'begin' : '2005',
+                                                        'end'   : '2006'},
                                            })
         self.assertEqual(Utilities().SerializeRaw(document),
                 '<Document>'
                 + '<TimeSpan>'
-                + '<begin>1/2/03</begin>'
-                + '<end>1/3/03</end>'
+                + '<begin>2005</begin>'
+                + '<end>2006</end>'
                 + '</TimeSpan>'
                 + '</Document>')
 
@@ -339,31 +341,23 @@ class TestFolderObject(unittest.TestCase):
 
     def test_create_folder_with_attributes(self):
 
-        folder = Kml().create_folder({'id' : 'sampleID',
-                                      'name' : 'Outer Folder',
-                                      'visibility' : False,
-                                      'open' : True,
-                                      #'atom:author'
-                                      #'atom:link'
-                                      #'address'
-                                      #'xal:address details'
-                                      #'phone number'
-                                      'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
-                                      'description' : 'Sample Description',
-                                      #'abstract view' (abstract)        
-                                      #  'camera' :
-                                      #  'lookat' :
-                                      #'time primitive' (abstract)
-                                      #  'time span' :
-                                      'timestamp' : {'when': '5/19/2009'},
-                                      'styleurl' : 'http://style.sample.com',
-                                      #'style selector' (abstract)
-                                      #  'style' :
-                                      #  'style map' :
-                                      #'region' :
-                                      #'extended data' :
-                                      #'feature' (abstract)
-                                      #  'feature Container (abstract)
+        folder = Kml().create_folder({'id' : 'SampleID',
+                            'name' : 'SampleName',
+                            'visibility' : 1,
+                            'open' : 1,
+#                            'atomauthor':Kml().create_atomauthor(),
+#                            'atomlink':Kml().create_atomlink(),
+                            'address':'1060 West Addison',
+                            #  <xal:AddressDetails>...</xal:AddressDetails>  <!-- xmlns:xal -->
+                            'phonenumber':'867-5309',
+                            'snippet': Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
+                            'description' : 'Sample Folder',
+                            'lookat':Kml().create_lookat(),
+                            'timestamp' : {'when': '2009-05-19'},
+                            'styleurl':'#mainstyle',
+                            'style':Kml().create_style(),
+                            'region':Kml().create_region(),
+                            'extendeddata':Kml().create_extendeddata({'data':Kml().create_data()}),
                                       #    'document' :
                                       #    'folder' :
                                       #  'overlay' :
@@ -373,14 +367,18 @@ class TestFolderObject(unittest.TestCase):
                                      })
         
         self.assertEqual(Utilities().SerializeRaw(folder),
-                '<Folder id="sampleID">'
-                + '<name>Outer Folder</name>'
-                + '<visibility>0</visibility>'
+                '<Folder id="SampleID">'
+                + '<name>SampleName</name>'
+                + '<visibility>1</visibility>'
                 + '<open>1</open>'
+                + '<address>1060 West Addison</address>'
                 + '<Snippet maxLines="10">Sample Snippet</Snippet>'
-                + '<description>Sample Description</description>'
-                + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
-                + '<styleUrl>http://style.sample.com</styleUrl>'
+                + '<description>Sample Folder</description>'
+                + '<LookAt/>'
+                + '<TimeStamp><when>2009-05-19</when></TimeStamp>'
+                + '<styleUrl>#mainstyle</styleUrl>'
+                + '<Style/><Region/>'
+                + '<ExtendedData><Data/></ExtendedData>'
                 + '</Folder>')
 
     def test_create_folder_with_timespan(self):

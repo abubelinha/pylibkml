@@ -415,13 +415,13 @@ class Kml():
                     feature.set_timeprimitive(params[key])
             elif key == 'timestamp':
                 if type(params[key]) == DictType:
-                    timespan = Kml().create_timestamp(params[key])
-                    feature.set_timeprimitive(timespan)
+                    timestamp = Kml().create_timestamp(params[key])
+                    feature.set_timeprimitive(timestamp)
                 else:
                     feature.set_timeprimitive(params[key])
             elif key == 'styleurl':
                 feature.set_styleurl(params[key])
-            elif key == 'style':
+            elif key == 'style' or key == 'stylemap':
                 if docflag == 1:
                     if isinstance(params[key],list):
                         for x in params[key]:
@@ -430,8 +430,6 @@ class Kml():
                         feature.add_styleselector(params[key])
                 else:
                     feature.set_styleselector(params[key])
-            elif key == 'stylemap':
-                feature.add_styleselector(params[key])
             elif key == 'region':
                 feature.set_region(params[key])
             elif key == 'extendeddata':
