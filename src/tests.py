@@ -4,8 +4,8 @@
 
 import sys
 import unittest
+from datetime import datetime
 from pylibkml import *
-
 
 class TestAlias(unittest.TestCase):
 
@@ -1418,7 +1418,7 @@ class TestPlacemarkObject(unittest.TestCase):
         coordinates.add_latlng(40, -120) 
         point = factory.CreatePoint()
         point.set_altitudemode(kmldom.ALTITUDEMODE_RELATIVETOGROUND)
-        point.set_extrude(100)
+        point.set_extrude(True)
         point.set_coordinates(coordinates)
         placemark1.set_geometry(point)
 
@@ -1429,7 +1429,7 @@ class TestPlacemarkObject(unittest.TestCase):
                         'description' : 'Sample Description',
                         'timestamp' : {'when': '5/19/2009'},
                         'point' :  Kml().create_point({
-                            'extrude' : 100,
+                            'extrude' : True,
                             'altitudemode' : 'relativetoground',
                             'coordinates' : Kml().create_coordinates(-120,40),
                             })
@@ -1628,6 +1628,7 @@ class TestTimeSpan(unittest.TestCase):
         timespan = Kml().create_timespan()
         self.assertEqual(str(timespan.__class__), "<class 'kmldom.TimeSpan'>")
         self.assertEqual(Utilities().SerializeRaw(timespan), '<TimeSpan/>')
+    
     def test_create_timespan_with_attributes(self):
         timespan = Kml().create_timespan({'id' : 'SampleID',
                                         'begin': '1986',
@@ -1637,6 +1638,28 @@ class TestTimeSpan(unittest.TestCase):
             '<TimeSpan id="SampleID">'
             +'<begin>1986</begin>'
             +'<end>2009</end>'
+            +'</TimeSpan>')
+
+    def test_create_timespan_with_datetime(self):
+        timestamp = Kml().create_timespan({
+                        'id' : 'SampleID',
+                        'begin' : datetime(year=2009,
+                                            month=6,
+                                            day=13,
+                                            hour=8,
+                                            minute=15,
+                                            second=5,),
+                        'end' : datetime(year=2009,
+                                            month=6,
+                                            day=13,
+                                            hour=16,
+                                            minute=0,
+                                            second=0,),
+                        })
+        self.assertEquals(Utilities().SerializeRaw(timestamp),
+            '<TimeSpan id="SampleID">'
+            +'<begin>2009-06-13T08:15:05</begin>'
+            +'<end>2009-06-13T16:00:00</end>'
             +'</TimeSpan>')
 
 
@@ -1657,6 +1680,21 @@ class TestTimeStamp(unittest.TestCase):
         self.assertEquals(Utilities().SerializeRaw(timestamp),
             '<TimeStamp id="SampleID">'
             +'<when>2009</when>'
+            +'</TimeStamp>')
+
+    def test_create_timestamp_with_datetime(self):
+        timestamp = Kml().create_timestamp({
+                        'id' : 'SampleID',
+                        'when' : datetime(year=2009,
+                                            month=6,
+                                            day=13,
+                                            hour=8,
+                                            minute=15,
+                                            second=5,),
+                        })
+        self.assertEquals(Utilities().SerializeRaw(timestamp),
+            '<TimeStamp id="SampleID">'
+            +'<when>2009-06-13T08:15:05</when>'
             +'</TimeStamp>')
 
 

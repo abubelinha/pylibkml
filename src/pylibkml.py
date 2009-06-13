@@ -1905,14 +1905,27 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#timespan
     """
     def create_timespan(self, params={}):
+    
+        import datetime
+            
         timespan = factory.CreateTimeSpan()
         timespan = self.process_timeprimitive_attributes(timespan, params)
 
         for key in params:
             if key == 'begin':
-                timespan.set_begin(params[key])
+                if type(params[key]) == StringType:
+                    timespan.set_begin(params[key])
+                elif type(params[key]) == datetime.datetime:
+                    timespan.set_begin(params[key].isoformat())
+                else:
+                    print "ERROR: unrecognized 'begin' parameter."
             elif key == 'end':
-                timespan.set_end(params[key])
+                if type(params[key]) == StringType:
+                    timespan.set_end(params[key])
+                elif type(params[key]) == datetime.datetime:
+                    timespan.set_end(params[key].isoformat())
+                else:
+                    print "ERROR: unrecognized 'end' parameter."
         return timespan
 
     """ --------------------------------------------------------------
@@ -1922,12 +1935,21 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#timestamp
     """
     def create_timestamp(self, params={}):
+    
+        import datetime
+        
         timestamp = factory.CreateTimeStamp()
         timestamp = self.process_timeprimitive_attributes(timestamp, params)
 
         for key in params:
             if key == 'when':
-                timestamp.set_when(params[key])
+                if type(params[key]) == StringType:
+                    timestamp.set_when(params[key])
+                elif type(params[key]) == datetime.datetime:
+                    timestamp.set_when(params[key].isoformat())
+                else:
+                    print "ERROR: unrecognized 'when' parameter."
+                
         return timestamp
 
     """ --------------------------------------------------------------
