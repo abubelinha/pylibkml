@@ -1751,6 +1751,20 @@ class TestSimpleField(unittest.TestCase):
             +'<displayName>displayName</displayName>'
             +'</SimpleField>')
 
+class TestSimpleData(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_simpledata(self):
+        simpledata = Kml().create_simpledata()
+        self.assertEqual(str(simpledata.__class__),"<class 'kmldom.SimpleData'>")
+        self.assertEqual(Utilities().SerializeRaw(simpledata),'<SimpleData/>')
+
+    def test_create_simpledata_with_attributes(self):
+        simpledata = Kml().create_simpledata({'text':'Text',
+                                                'name':'Name'})
+        self.assertEqual(Utilities().SerializeRaw(simpledata),'<SimpleData name="Name">Text</SimpleData>')
+
 class TestSize(unittest.TestCase):
 
     def setUp(self):
