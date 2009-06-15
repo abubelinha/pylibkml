@@ -362,14 +362,12 @@ class Kml():
         for key in params:
             if key == 'data':
                 if isinstance(params[key],list):
-                    # process multiple schemadata if needed
                     for x in params[key]:
                         extendeddata.add_data(x)
                 else:
                     extendeddata.add_data(params[key]) 
             elif key == 'schemadata':
                 if isinstance(params[key],list):
-                    # process multiple schemadata if needed
                     for x in params[key]:
                         extendeddata.add_schemadata(x)
                 else:
@@ -1683,7 +1681,6 @@ class Kml():
                 schema.set_name(params[key])
             elif key == 'simplefield':
                 if isinstance(params[key],list):
-                    # process multiple simplefield if needed
                     for x in params[key]:
                         schema.add_simplefield(x)
                 else:
@@ -1697,16 +1694,16 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#schemadata
     """
     def create_schemadata(self,params={}):
-        schemadata = factory.CreateSchemaData()        
+        schemadata = factory.CreateSchemaData()
+       
         for key in params:
             if key == 'simpledata':
                 if isinstance(params[key],list):
-                    # process multiple simpledata if needed
                     for x in params[key]:
                         schemadata.add_simpledata(x)
                 else:
                     schemadata.add_simpledata(params[key])
-        return schemadata     
+        return schemadata
 
     """ --------------------------------------------------------------
     <ScreenOverlay> element
@@ -1777,8 +1774,24 @@ class Kml():
             elif key == 'displayname':
                 simplefield.set_displayname(params[key])
             elif key == 'name':
-                simplefield.set_type(params[key])
+                simplefield.set_name(params[key])
         return simplefield
+
+    """ --------------------------------------------------------------
+    <SimpleData> element
+    
+    Ref:
+    http://code.google.com/apis/kml/documentation/kmlreference.html#simpledata
+    """
+    def create_simpledata(self,params={}):
+        simpledata = factory.CreateSimpleData()
+        
+        for key in params:
+            if key == 'name':
+#                simpledata.set_name(params[key])
+                print 'Waiting for a fix from LIBKML'
+                pass
+        return simpledata
 
     """ --------------------------------------------------------------
     <Size> element

@@ -1418,34 +1418,11 @@ class TestPlacemarkObject(unittest.TestCase):
                                       'name' : 'Placemark Name',
                                       'visibility' : False,
                                       'open' : True,
-                                      #'atom:author'
-                                      #'atom:link'
-                                      #'address'
-                                      #'xal:address details'
-                                      #'phone number'
                                       'snippet' : Kml().create_snippet({'maxlines':10,'text':'Sample Snippet'}),
                                       'description' : 'Sample Description',
-                                      #'abstract view' (abstract)        
-                                      #  'camera' :
-                                      #  'lookat' :
-                                      #'time primitive' (abstract)
-#                                      'timespan' : {'begin' : '1/2/03',
-#                                                    'end' : '1/3/03'},
                                       'timestamp' : {'when': '5/19/2009'},
                                       'styleurl' : 'http://style.sample.com',
-                                      #'style selector' (abstract)
-                                      #  'style' :
-                                      #  'style map' :
-                                      #'region' :
-                                      #'extended data' :
-                                      #'feature' (abstract)
-                                      #  'feature Container (abstract)
-                                      #    'document' :
-                                      #    'folder' :
-                                      #  'overlay' :
-                                      #  'placemark' :
-                                      #  'network link' :
-                                      #  'gx:tour' :
+                                      'model':Kml().create_model(),
                                         })
         
         self.assertEqual(Utilities().SerializeRaw(placemark),
@@ -1457,6 +1434,7 @@ class TestPlacemarkObject(unittest.TestCase):
                 + '<description>Sample Description</description>'
                 + '<TimeStamp><when>5/19/2009</when></TimeStamp>'
                 + '<styleUrl>http://style.sample.com</styleUrl>'
+                + '<Model/>'
                 + '</Placemark>')
 
     def test_create_placemark_with_geometry(self):
@@ -1527,6 +1505,7 @@ class TestPointObject(unittest.TestCase):
             'id' : 'Sample ID',
                         'extrude' : 100,
                         'altitudemode' : 'relativetoground',
+                        'gxaltitudemode' : 'clamptoseafloor',
                         'coordinates' : Kml().create_coordinates(-120,40),
                     })
 
@@ -1534,6 +1513,7 @@ class TestPointObject(unittest.TestCase):
                     '<Point id="Sample ID">'
                     + '<extrude>1</extrude>'
                     + '<altitudeMode>relativeToGround</altitudeMode>'
+                    + '<gx:altitudeMode>clampToSeaFloor</gx:altitudeMode>'
                     + '<coordinates>-120,40,0\n</coordinates>'
                     + '</Point>'
                 )
@@ -1572,15 +1552,18 @@ class TestPolygonObject(unittest.TestCase):
 
         inner = Kml().create_linearring({'coordinates':in_coord,})
         
+        innerBound = []
         outerBound = Kml().create_outerboundaryis({'linearring':outer,})
-        innerBound = Kml().create_innerboundaryis({'linearring':inner,})
+        innerBound.append(Kml().create_innerboundaryis({'linearring':inner,}))
+        
+        innerBound.append(Kml().create_innerboundaryis())
 
         polygon = Kml().create_polygon({'id' : 'Sample ID',
                             'extrude':1,
                             'tessellate':0,
                             'altitudemode':'relativetoground',
                             'outerboundaryis':outerBound,
-                            #'innerboundaryis':innerBound, #error  in libkml, waiting for update
+                            'innerboundaryis':innerBound,
                             })
 
         self.assertEquals(Utilities().SerializeRaw(polygon),
@@ -1589,9 +1572,9 @@ class TestPolygonObject(unittest.TestCase):
                 + '<tessellate>0</tessellate>'
                 + '<altitudeMode>relativeToGround</altitudeMode>'
                 + '<outerBoundaryIs><LinearRing><coordinates>0,0,0\n0,3,0\n3,3,0\n3,0,0\n0,0,0\n</coordinates></LinearRing></outerBoundaryIs>'
-                #+ '<innerBoundaryIs>0,0,0\n1,0,0\n0,1,0\n0,0,0\n</innerBoundaryIs>'
+                + '<innerBoundaryIs><LinearRing><coordinates>1,1,0\n1,2,0\n2,2,0\n2,1,0\n1,1,0\n</coordinates></LinearRing></innerBoundaryIs>'
+                + '<innerBoundaryIs/>'
                 + '</Polygon>')
-
 
 class TestPolyStyleObject(unittest.TestCase):
 
@@ -1618,6 +1601,100 @@ class TestPolyStyleObject(unittest.TestCase):
             + '<outline>1</outline>'
             + '</PolyStyle>')
 
+class TestRegionObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_region(self):
+        region = Kml().create_region()
+        self.assertEqual(str(region.__class__),"<class 'kmldom.Region'>")
+        self.assertEqual(Utilities().SerializeRaw(region),'<Region/>')
+
+    def test_create_region_with_attributes(self):
+        region = Kml().create_region({'latlonaltbox':Kml().create_latlonaltbox(),
+                                        'lod':Kml().create_lod()})
+        self.assertEqual(Utilities().SerializeRaw(region),'<Region><LatLonAltBox/><Lod/></Region>')
+        
+class TestResourceMapObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_resourcemap(self):
+        resourcemap = Kml().create_resourcemap()
+        self.assertEqual(str(resourcemap.__class__),"<class 'kmldom.ResourceMap'>")
+        self.assertEqual(Utilities().SerializeRaw(resourcemap),'<ResourceMap/>')
+
+    def test_create_resourcemap_with_attributes(self):
+        resourcemap = Kml().create_resourcemap({'alias':[Kml().create_alias(),Kml().create_alias()]})
+        self.assertEqual(Utilities().SerializeRaw(resourcemap),'<ResourceMap><Alias/><Alias/></ResourceMap>')
+
+class TestRotationXYObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_rotationxy(self):
+        rotationxy = Kml().create_rotationxy()
+        self.assertEqual(str(rotationxy.__class__),"<class 'kmldom.RotationXY'>")
+        self.assertEqual(Utilities().SerializeRaw(rotationxy),'<rotationXY/>')
+
+    def test_create_rotationxy_with_attributes(self):
+        rotationxy = Kml().create_rotationxy({'x':100,
+                                                'xunits':'fraction',
+                                                'y':200,
+                                                'yunits':'pixels'})
+        self.assertEqual(Utilities().SerializeRaw(rotationxy),'<rotationXY x="100" xunits="fraction" y="200" yunits="pixels"/>')
+
+class TestScaleObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_scale(self):
+        scale = Kml().create_scale()
+        self.assertEqual(str(scale.__class__),"<class 'kmldom.Scale'>")
+        self.assertEqual(Utilities().SerializeRaw(scale),'<Scale/>')
+
+    def test_create_scale_with_attributes(self):
+        scale = Kml().create_scale({'x':100,
+                                    'y':200,
+                                    'z':300})
+        self.assertEqual(Utilities().SerializeRaw(scale),'<Scale><x>100</x><y>200</y><z>300</z></Scale>')
+
+class TestSchemaObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_schema(self):
+        schema = Kml().create_schema()
+        self.assertEqual(str(schema.__class__),"<class 'kmldom.Schema'>")
+        self.assertEqual(Utilities().SerializeRaw(schema),'<Schema/>')
+
+    def test_create_schema_with_attributes(self):
+        schema = Kml().create_schema({'name':'Sample Name',
+                                        'simplefield':[Kml().create_simplefield(),Kml().create_simplefield()]})
+        self.assertEqual(Utilities().SerializeRaw(schema),'<Schema name="Sample Name">'
+            +'<SimpleField/><SimpleField/>'
+            +'</Schema>')
+
+class TestSchemaDataObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_schemadata(self):
+        schemadata = Kml().create_schemadata()
+        self.assertEqual(str(schemadata.__class__),"<class 'kmldom.SchemaData'>")
+        self.assertEqual(Utilities().SerializeRaw(schemadata),'<SchemaData/>')
+
+    def test_create_schemadata_with_attributes(self):
+        schemadata = Kml().create_schemadata({'simpledata':[Kml().create_simpledata(),Kml().create_simpledata()]})
+        self.assertEqual(Utilities().SerializeRaw(schemadata),'<SchemaData>'
+            +'<SimpleData/><SimpleData/>'
+            +'</SchemaData>')
 
 class TestStyleMap(unittest.TestCase):
 
