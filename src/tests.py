@@ -965,8 +965,6 @@ class TestLinearRingObject(unittest.TestCase):
         coordinates.add_latlngalt(1,0,0)
         coordinates.add_latlngalt(0,0,0)
 
-        #import ipdb; ipdb.set_trace()
-
         linearring = Kml().create_linearring({'id' : 'Sample ID',
                             'extrude': 1,
                             'tessellate': 0,
@@ -1282,7 +1280,6 @@ class TestNetworkLinkControlObject(unittest.TestCase):
                                                                 'update':Kml().create_update(),
                                                                 'camera':Kml().create_camera()
                                                                 })
-        print Utilities().SerializeRaw(networklinkcontrol)
         self.assertEqual(Utilities().SerializeRaw(networklinkcontrol),'<NetworkLinkControl>'
                 +'<minRefreshPeriod>0</minRefreshPeriod>'
                 +'<maxSessionLength>100</maxSessionLength>'
@@ -1296,12 +1293,28 @@ class TestNetworkLinkControlObject(unittest.TestCase):
                 +'<Camera/>'
                 +'</NetworkLinkControl>')
 
+class TestOrientation(unittest.TestCase):
+    def setUp(self):
+        pass
+    def test_create_orientation(self):
+        orientation = Kml().create_orientation()
+        self.assertEqual(str(orientation.__class__),"<class 'kmldom.Orientation'>")
+        self.assertEqual(Utilities().SerializeRaw(orientation),'<Orientation/>')
+
+    def test_create_orientation_with_attributes(self):
+        orientation = Kml().create_orientation({'heading':10,
+                                                'roll':20,
+                                                'tilt':30,})
+        self.assertEqual(Utilities().SerializeRaw(orientation),'<Orientation>'
+            +'<heading>10</heading>'
+            +'<tilt>30</tilt>'
+            +'<roll>20</roll>'
+            +'</Orientation>')
+            
 class TestOuterBoundaryIs(unittest.TestCase):
     def setUp(self):
         pass
     def test_create_linestring(self):
-    
-        import kmldom;
         out_coord = factory.CreateCoordinates()
         out_coord.add_latlngalt(0,0,0)
         out_coord.add_latlngalt(3,0,0)
@@ -1318,6 +1331,22 @@ class TestOuterBoundaryIs(unittest.TestCase):
             +'</LinearRing>'
             +'</outerBoundaryIs>')
 
+class TestOverlayXYObject(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_overlayxy(self):
+    
+        overlayxy = Kml().create_overlayxy()
+
+        self.assertEqual(str(overlayxy.__class__), "<class 'kmldom.OverlayXY'>")
+        self.assertEqual(Utilities().SerializeRaw(overlayxy), '<overlayXY/>')
+    def test_create_overlayxy_with_attributes(self):
+        overlayxy = Kml().create_overlayxy({'x':100,
+                                            'xunits':'pixels',
+                                            'y':200,
+                                            'yunits':'fraction'})
+        self.assertEqual(Utilities().SerializeRaw(overlayxy),'<overlayXY x="100" xunits="pixels" y="200" yunits="fraction"/>')
 
 class TestPairObject(unittest.TestCase):
     def setUp(self):
@@ -1341,6 +1370,35 @@ class TestPairObject(unittest.TestCase):
             + '<styleUrl>http://www.mtri.org</styleUrl>'
             + '</Pair>')
 
+class TestPhotoOverlayObject(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_photooverlay(self):
+    
+        photooverlay = Kml().create_photooverlay()
+
+        self.assertEqual(str(photooverlay.__class__), "<class 'kmldom.PhotoOverlay'>")
+        self.assertEqual(Utilities().SerializeRaw(photooverlay), '<PhotoOverlay/>')
+    def test_create_photooverlay_with_attributes(self):
+        photooverlay = Kml().create_photooverlay({'color':'fedcba45',
+                                                    'draworder':1,
+                                                    'icon':Kml().create_icon(),
+                                                    'rotation':90,
+                                                    'viewvolume':Kml().create_viewvolume(),
+                                                    'imagepyramid':Kml().create_imagepyramid(),
+                                                    'point':Kml().create_point(),
+                                                    'shape':'sphere'})
+        self.assertEqual(Utilities().SerializeRaw(photooverlay),'<PhotoOverlay>'
+                +'<color>fedcba45</color>'
+                +'<drawOrder>1</drawOrder>'
+                +'<Icon/>'
+                +'<rotation>90</rotation>'
+                +'<ViewVolume/>'
+                +'<ImagePyramid/>'
+                +'<Point/>'
+                +'<shape>sphere</shape>'
+                +'</PhotoOverlay>')
 
 class TestPlacemarkObject(unittest.TestCase):
 

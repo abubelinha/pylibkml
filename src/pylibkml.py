@@ -1450,8 +1450,8 @@ class Kml():
     http://code.google.com/apis/kml/documentation/kmlreference.html#photooverlay
     """
     def create_photooverlay(self,params={}):
-        photooverlay = factory.CreateFactoryOverlay()
-        photooverlay = self.process_overlay_attribbutes(photooverlay,params)
+        photooverlay = factory.CreatePhotoOverlay()
+        photooverlay = self.process_overlay_attributes(photooverlay,params)
         
         for key in params:
             if key == 'rotation':
