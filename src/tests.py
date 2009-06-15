@@ -1696,6 +1696,97 @@ class TestSchemaDataObject(unittest.TestCase):
             +'<SimpleData/><SimpleData/>'
             +'</SchemaData>')
 
+class TestScreenOverlay(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_screenoverlay(self):
+        screenoverlay = Kml().create_screenoverlay()
+        self.assertEqual(str(screenoverlay.__class__),"<class 'kmldom.ScreenOverlay'>")
+        self.assertEqual(Utilities().SerializeRaw(screenoverlay),'<ScreenOverlay/>')
+
+    def test_create_screenoverlay_with_attributes(self):
+        screenoverlay = Kml().create_screenoverlay({'overlayxy':Kml().create_overlayxy(),
+                                                    'screenxy':Kml().create_screenxy(),
+                                                    'rotationxy':Kml().create_rotationxy(),
+                                                    'size':Kml().create_size(),
+                                                    'rotation':90})
+        self.assertEqual(Utilities().SerializeRaw(screenoverlay),'<ScreenOverlay>'
+            +'<overlayXY/><screenXY/><rotationXY/>'
+            +'<size/>'
+            +'<rotation>90</rotation>'
+            +'</ScreenOverlay>')
+
+class TestScreenXYObject(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_screenxy(self):
+        screenxy = Kml().create_screenxy()
+        self.assertEqual(str(screenxy.__class__),"<class 'kmldom.ScreenXY'>")
+        self.assertEqual(Utilities().SerializeRaw(screenxy),'<screenXY/>')
+
+    def test_create_screenxy_with_attributes(self):
+        screenxy = Kml().create_screenxy({'x':100,
+                                                'xunits':'fraction',
+                                                'y':200,
+                                                'yunits':'pixels'})
+        self.assertEqual(Utilities().SerializeRaw(screenxy),'<screenXY x="100" xunits="fraction" y="200" yunits="pixels"/>')
+
+class TestSimpleField(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_create_simplefield(self):
+        simplefield = Kml().create_simplefield()
+        self.assertEqual(str(simplefield.__class__),"<class 'kmldom.SimpleField'>")
+        self.assertEqual(Utilities().SerializeRaw(simplefield),'<SimpleField/>')
+
+    def test_create_simplefield_with_attributes(self):
+        simplefield = Kml().create_simplefield({'type':'placemark',
+                                                    'displayname':'displayName',
+                                                    'name':'Name'})
+        self.assertEqual(Utilities().SerializeRaw(simplefield),'<SimpleField name="Name" type="placemark">'
+            +'<displayName>displayName</displayName>'
+            +'</SimpleField>')
+
+class TestSize(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_size(self):
+        size = Kml().create_size()
+        self.assertEqual(str(size.__class__),"<class 'kmldom.Size'>")
+        self.assertEqual(Utilities().SerializeRaw(size),'<size/>')
+
+    def test_create_size_with_attributes(self):
+        size = Kml().create_size({'x':100,
+                                    'xunits':'fraction',
+                                    'y':200,
+                                    'yunits':'pixels'})
+        self.assertEqual(Utilities().SerializeRaw(size),'<size x="100" xunits="fraction" y="200" yunits="pixels"/>')
+
+class TestStyle(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_create_style(self):
+        style = Kml().create_style()
+        self.assertEqual(str(style.__class__),"<class 'kmldom.Style'>")
+        self.assertEqual(Utilities().SerializeRaw(style),'<Style/>')
+
+    def test_create_style_with_attributes(self):
+        style = Kml().create_style({'iconstyle':Kml().create_iconstyle(),
+                                    'labelstyle':Kml().create_labelstyle(),
+                                    'linestyle':Kml().create_linestyle(),
+                                    'polystyle':Kml().create_polystyle(),
+                                    'balloonstyle':Kml().create_balloonstyle(),
+                                    'liststyle':Kml().create_liststyle()})
+        self.assertEqual(Utilities().SerializeRaw(style),'<Style><IconStyle/><LabelStyle/><LineStyle/><PolyStyle/><BalloonStyle/><ListStyle/></Style>')
+
 class TestStyleMap(unittest.TestCase):
 
     def setUp(self):
@@ -1707,52 +1798,17 @@ class TestStyleMap(unittest.TestCase):
         self.assertEqual(Utilities().SerializeRaw(stylemap), '<StyleMap/>')
 
     def test_create_stylemap_with_attributes(self):
-        
-        pair = Kml().create_pair({'key':0,})
-        
+        pair = []
+        pair.append(Kml().create_pair({'key':0,}))
+        pair.append(Kml().create_pair({'key':1,}))
         stylemap = Kml().create_stylemap({'id':'SampleID',
                                         'pair':pair,})
         self.assertEquals(Utilities().SerializeRaw(stylemap),
             '<StyleMap id="SampleID">'
             + '<Pair><key>normal</key></Pair>'
+            + '<Pair><key>highlight</key></Pair>'
             + '</StyleMap>')
 
-
-class TestStyleObject(unittest.TestCase):
-
-    def setUp(self):
-        pass
-        
-    def test_create_style(self):
-        
-        style = Kml().create_style({'id' : 'sample_id'})
-
-        self.assertEquals(Utilities().SerializeRaw(style),'<Style id="sample_id"/>')
-
-#    def test_create_balloonstyle(self):
-#        id_= 'sample_id'
-#        bgcolor=kmlbase.Color32(255,0,0,255)   aBGR
-#        testcolor=kmlbase.Color32(255,255,0,255)   aBGR
-#        text='Sample text'
-#        displaymode=kmldom.DISPLAYMODE_DEFAULT
-#        
-#        style = Kml().create_style({
-#                            'id' : 'sample_id',
-#                         })
-#        style = shortcuts.create_balloonstyle(
-#                id_=id_,
-#                bgcolor=bgcolor,
-#                textcolor=testcolor,
-#                text=text,
-#                displaymode=displaymode,
-#            )
-#        self.assertEquals(Utilities().SerializeRaw(style),
-#                '<BalloonStyle id="sample_id">'
-#                '<bgColor>ff0000ff</bgColor>'
-#                '<textColor>ffff00ff</textColor>'
-#                '<text>Sample text</text>'
-#                '<displayMode>default</displayMode>'
-#                '</BalloonStyle>')
 
 
 class TestTimeSpan(unittest.TestCase):
@@ -1832,6 +1888,51 @@ class TestTimeStamp(unittest.TestCase):
             +'<when>2009-06-13T08:15:05</when>'
             +'</TimeStamp>')
 
+class TestUpdate(unittest.TestCase):
+
+    def setUp(self):
+        pass
+        
+    def test_create_update(self):
+        update = Kml().create_update()
+        self.assertEqual(str(update.__class__), "<class 'kmldom.Update'>")
+        self.assertEqual(Utilities().SerializeRaw(update), '<Update/>')
+
+    def test_create_update_with_attributes(self):
+        update = Kml().create_update({'targethref' : 'www.google.com',
+                                        'create' : Kml().create_create(),
+                                        'change' : Kml().create_change(),
+                                        'delete' : Kml().create_delete()})
+        self.assertEquals(Utilities().SerializeRaw(update),
+            '<Update>'
+            +'<targetHref>www.google.com</targetHref>'
+            +'<Create/><Change/><Delete/>'
+            +'</Update>')
+            
+class TestViewVolume(unittest.TestCase):
+
+    def setUp(self):
+        pass
+        
+    def test_create_viewvolume(self):
+        viewvolume = Kml().create_viewvolume()
+        self.assertEqual(str(viewvolume.__class__), "<class 'kmldom.ViewVolume'>")
+        self.assertEqual(Utilities().SerializeRaw(viewvolume), '<ViewVolume/>')
+
+    def test_create_viewvolume_with_attributes(self):
+        viewvolume = Kml().create_viewvolume({'leftFov' : 10,
+                                        'rightFov' : 20,
+                                        'bottomFov' : 30,
+                                        'topFov' : 40,
+                                        'near' : 50})
+        self.assertEquals(Utilities().SerializeRaw(viewvolume),
+            '<ViewVolume>'
+            +'<leftFov>10</leftFov>'
+            +'<rightFov>20</rightFov>'
+            +'<bottomFov>30</bottomFov>'
+            +'<topFov>40</topFov>'
+            +'<near>50</near>'
+            +'</ViewVolume>')
 
 class TestCompositeTests(unittest.TestCase):
 

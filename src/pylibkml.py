@@ -1788,9 +1788,9 @@ class Kml():
         
         for key in params:
             if key == 'name':
-#                simpledata.set_name(params[key])
-                print 'Waiting for a fix from LIBKML'
-                pass
+                simpledata.set_name(params[key])
+            elif key == 'text':
+                simpledata.set_text(params[key])
         return simpledata
 
     """ --------------------------------------------------------------
