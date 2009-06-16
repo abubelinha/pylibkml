@@ -1,0 +1,8 @@
+Authors
+-------
+
+The primary author of pylibkml is Tyler Erickson <tyler.erickson - at - mtu.edu>
+
+Others who have contributed to the application:
+ * Ronald Kemker
+ * Charles Hatt

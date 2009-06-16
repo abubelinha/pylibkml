@@ -1,0 +1,11 @@
+Install
+-------
+
+Thank you for downloading pylibkml.
+
+To install it, simply place the included `src` directory somewhere on your
+Python path, or symlink to the directory from somewhere on your Python path.
+
+For example:
+sudo hg clone https://pylibkml.googlecode.com/hg/ /usr/local/pylibkml
+sudo sh -c "echo /usr/local/pylibkml/src > /usr/lib/python2.5/site-packages/pylibkml.pth"
