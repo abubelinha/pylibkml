@@ -160,6 +160,42 @@ class CreateKMZTest(unittest.TestCase):
         ziplist.append('sample2.jpg')
         Utilities().create_kmz('sample.kml','output.kmz',ziplist)
     
-    
+class TestProcessHTML(unittest.TestCase):
+
+    def setUp(self):
+        pass
+    def test_processhtml(self):
+        retVal = Utilities().process_html('test.html')
+
+        self.assertEqual(retVal,'<![CDATA['
+            +'<html>\n'
+            +'<head>\n'
+            +'<title>\n'
+            +'Cinematics\n'
+            +'</title>\n'
+            +'</head>\n'
+            +'\n'
+            +'<body>\n'
+            +'<div class="header">Cinematics</div>\n'
+            +'\n'
+            +'<table align="center">\n'
+            +'<tr valign="top">\n'
+            +'<td style="width: 50%;">\n'
+            +'<div id="map_div" style="width: 400px; height: 300;"></div>\n'
+            +'</td>\n'
+            +'<td style="width: 50%;">\n'
+            +'<div id="table_div"></div>\n'
+            +'</td>\n'
+            +'</tr>\n'
+            +'<tr>\n'
+            +'<td colSpan=2>\n'
+            +'<div id="chart_div" style="align: center; width: 700px; height: 300px;"></div>\n'
+            +'</td>\n'
+            +'</tr>\n'
+            +'</table>\n'
+            +'\n'
+            +'</body>\n'
+            +'</html>\n]]>')
+
 if __name__ == '__main__':
     unittest.main()

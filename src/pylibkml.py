@@ -2175,6 +2175,21 @@ class Utilities():
             zip.write(x)
        
         zip.close()
+        
+    def process_html(self,inputFile):
+        
+        cData = '<![CDATA['
+        
+        temp = open(inputFile,'r')
+        for line in temp:
+            i=0
+            for i in range(0,len(line)):
+                if line[i] != ' ':
+                    break
+            cData = cData + line[i:len(line)]
+
+        cData = cData + ']]>' 
+        return cData
 
 if __name__=='__main__':
     from tests import test
