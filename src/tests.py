@@ -164,6 +164,19 @@ class TestCoordinatesObject(unittest.TestCase):
         self.assertEqual(Utilities().SerializeRaw(coordinates), 
                         '<coordinates>-120,40,123\n</coordinates>')
 
+    def test_create_coordinates_series(self):
+        coordinates = Kml().create_coordinates(
+                        [
+                            [-100,10,100],
+                            [-120,40,123],
+                        ])
+
+        self.assertEqual(str(coordinates.__class__),
+                    "<class 'kmldom.Coordinates'>")
+        self.assertEqual(Utilities().SerializeRaw(coordinates), 
+                    '<coordinates>-100,10,100\n-120,40,123\n</coordinates>')
+
+
 class TestCreateObject(unittest.TestCase):
 
     def setUp(self):
@@ -666,11 +679,6 @@ class TestIconObject(unittest.TestCase):
                 + '</Icon>'
             )  
 
-    def test_create_iconstyle_with_non_enumerated_types(self):
-    
-        # TODO - write test for the enumerated types
-        pass
-
 
 class TestIconStyleObject(unittest.TestCase):
 
@@ -715,12 +723,12 @@ class TestIconStyleObject(unittest.TestCase):
 
     def test_create_iconstyle_with_non_enumerated_types(self):
         
-        style = Kml().create_iconstyle({
+        iconstyle = Kml().create_iconstyle({
                         'color' : 'ff0000ff',
                         'colormode' : 'random',
                     })
 
-        self.assertEquals(Utilities().SerializeRaw(style),
+        self.assertEquals(Utilities().SerializeRaw(iconstyle),
                     '<IconStyle>'
                     + '<color>ff0000ff</color>'
                     + '<colorMode>random</colorMode>'
@@ -741,11 +749,11 @@ class TestIconStyleIconObject(unittest.TestCase):
 
     def test_create_iconstyleicon_with_attributes(self):
     
-        style = Kml().create_iconstyleicon({
+        iconstyleicon = Kml().create_iconstyleicon({
                         'href' : 'Sunset.jpg',
                     })
 
-        self.assertEquals(Utilities().SerializeRaw(style),
+        self.assertEquals(Utilities().SerializeRaw(iconstyleicon),
                     '<Icon>'
                     + '<href>Sunset.jpg</href>'
                     + '</Icon>'
@@ -785,7 +793,7 @@ class TestInnerBoundaryIs(unittest.TestCase):
     def setUp(self):
         pass
 
-    def test_create_linestring(self):
+    def test_create_innerboundaryis(self):
     
         import kmldom;
         in_coord = factory.CreateCoordinates()
@@ -1005,7 +1013,8 @@ class TestLineStringObject(unittest.TestCase):
                             'tessellate':0,
                             'altitudemode': 'relativetoground',
                             'gxaltitudemode':'clamptoseafloor',
-                            'coordinates': coordinates,})                            
+                            'coordinates': coordinates,
+                          })
         self.assertEquals(Utilities().SerializeRaw(linestring),
                     '<LineString id="Sample ID">'
                     + '<extrude>1</extrude>'
@@ -1235,7 +1244,9 @@ class TestNetworkLinkObject(unittest.TestCase):
     def test_create_networklink_with_attributes(self):
         networklink = Kml().create_networklink({'refreshvisibility':1,
                                     'flytoview':1,
-                                    'link':Kml().create_link({'href':'http://www.google.com'}),
+                                    'link':Kml().create_link({
+                                            'href':'http://www.google.com'
+                                        }),
                                     })
         Utilities().SerializeRaw(networklink)
 
