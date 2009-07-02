@@ -1462,7 +1462,8 @@ class Kml():
         placemark = self.process_feature_attributes(placemark, params) 
         
         for key in params:           
-            if ((key == 'point')
+            if ((key == 'geometry')
+                    | (key == 'point')
                     | (key == 'linestring')
                     | (key == 'linearring')
                     | (key == 'polygon')
