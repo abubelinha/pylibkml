@@ -374,7 +374,7 @@ class Kml():
     Ref:
     http://code.google.com/apis/kml/documentation/kmlreference.html#feature
     """
-    def process_feature_attributes(self, feature, params,docflag=0):
+    def process_feature_attributes(self, feature, params, docflag=0):
         """
         Processes the attributes that are part of the abstract feature element
         """
@@ -1034,7 +1034,7 @@ class Kml():
         
         for key in params:
             if key == 'href':
-                link.set_href(params[key])
+                link.set_href(str(params[key]))
             elif key == 'refreshmode':
                 if params[key] == 'onchange':
                     link.set_refreshmode(kmldom.REFRESHMODE_ONCHANGE)
@@ -1463,7 +1463,8 @@ class Kml():
         placemark = self.process_feature_attributes(placemark, params) 
         
         for key in params:           
-            if ((key == 'point')
+            if ((key == 'geometry')
+                    | (key == 'point')
                     | (key == 'linestring')
                     | (key == 'linearring')
                     | (key == 'polygon')
