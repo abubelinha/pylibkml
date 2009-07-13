@@ -1469,8 +1469,7 @@ class Kml():
                     | (key == 'linearring')
                     | (key == 'polygon')
                     | (key == 'multigeometry')
-                    | (key == 'model')
-                    | (key == 'geometry')):
+                    | (key == 'model')):
                 
                 placemark.set_geometry(params[key])
         return placemark
