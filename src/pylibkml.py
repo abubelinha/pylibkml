@@ -257,10 +257,12 @@ class Kml():
         elif len(many) > 0:
             for key in many:
                 coordinates.add_latlngalt(key[1],key[0],key[2])
-        elif altitude == None:
+        elif altitude == None and latitude != None and longitude != None:
             coordinates.add_latlng(latitude, longitude)
+        elif latitude != None and longitude != None:
+            coordinates.add_latlngalt(latitude, longitude, altitude)
         else:
-            coordinates.add_latlngalt(latitude, longitude, altitude) 
+            pass
     
         return coordinates
 
@@ -1469,7 +1471,8 @@ class Kml():
                     | (key == 'linearring')
                     | (key == 'polygon')
                     | (key == 'multigeometry')
-                    | (key == 'model')):
+                    | (key == 'model')
+                    | (key == 'geometry')):
                 
                 placemark.set_geometry(params[key])
         return placemark
