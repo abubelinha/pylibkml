@@ -253,7 +253,10 @@ class Kml():
         
         if isinstance(longitude,list):
             for key in longitude:
-                coordinates.add_latlngalt(key[1],key[0],key[2])
+                if len(key) == 2:
+                    coordinates.add_latlngalt(key[1],key[0],0)
+                else:
+                    coordinates.add_latlngalt(key[1],key[0],key[2])
         elif len(many) > 0:
             for key in many:
                 coordinates.add_latlngalt(key[1],key[0],key[2])
@@ -2168,17 +2171,15 @@ class Utilities():
     '''----------------------------------------------------------------------
         NAME: create_kmz()
         DESCRIPTION: CREATE A KMZ FILE
-        INPUT: KMLFileName - (string) name of .kml file to be zipped (including directory)
+        INPUT:  filesToBeZipped - (list of strings) names of the files (and their directories) that you want zipped into the .kmz
                 outputFileName - (string) name of the .kmz file that you want to be created
-                filesToBeZipped - (list of strings) names of the files (and their directories) that you want zipped into the .kmz
+                
     '''    
-    def create_kmz(self, KMLFileName, outputFileName = 'out.kmz' ,filesToBeZipped = []):
+    def create_kmz(self, filesToBeZipped = [], outputFileName = 'out.kmz'):
     
         zip = zipfile.ZipFile(outputFileName,'w')
-        zip.write(KMLFileName)
         for x in filesToBeZipped:
             zip.write(x)
-       
         zip.close()
         
     def process_html(self,inputFile):
