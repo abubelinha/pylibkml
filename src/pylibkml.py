@@ -31,6 +31,7 @@ from types import *
 import string
 from string import *
 import zipfile
+import logging
 
 try:
     import kmldom
